@@ -8,6 +8,19 @@
 # $Id$
 ########### SVN repository information ###################
 
+import datetime
+import bcdaqwidgets
+
+
+StyleSheet	     = bcdaqwidgets.StyleSheet
+BcdaQSignalDef	     = bcdaqwidgets.BcdaQSignalDef
+BcdaQLabel	     = bcdaqwidgets.BcdaQLabel
+BcdaQLineEdit	     = bcdaqwidgets.BcdaQLineEdit
+BcdaQPushButton      = bcdaqwidgets.BcdaQPushButton
+BcdaQMomentaryButton = bcdaqwidgets.BcdaQMomentaryButton
+BcdaQToggleButton    = bcdaqwidgets.BcdaQToggleButton
+
+
 __project__     = u'BcdaQWidgets'
 __description__ = u"PyEpics-aware PySide widgets for the APS."
 __copyright__   = u'2013, Argonne National Laboratory'
@@ -19,8 +32,6 @@ __license__     = u"(c) 2009-2013, UChicago Argonne, LLC"
 __license__     += u" (see LICENSE file for details)"
 
 __long_description__ = __description__
-
-import datetime
 
 __yyyymmdd__      = str(datetime.datetime.now()).split()[0]
 __version__       = u"0.1"

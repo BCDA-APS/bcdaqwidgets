@@ -543,7 +543,7 @@ def main():
     # positional arguments
     # not required if GUI option is selected
     parser.add_argument('test_PV', action='store', nargs='?',
-                        help="EPICS PV name", default="morel:datetime")
+                        help="EPICS PV name", default="syn:datetime")
     results = parser.parse_args()
 
     app = QtGui.QApplication(sys.argv)
