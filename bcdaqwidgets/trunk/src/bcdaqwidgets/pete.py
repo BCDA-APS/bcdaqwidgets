@@ -76,7 +76,10 @@ class MplWidget(QtGui.QWidget):
                                   xlabel='time before now, ht',
                                   ylabel='',
                                   hold=True,
-                                  showgrid=True)
+                                  showgrid=True,
+                                  #xticks=[-24,-18,-6,0],
+                                  yticks=[0,25,50,75,100],
+                                  )
         layout.addWidget(widget)
         
         epoch, time_data, current_data = getTestData()
