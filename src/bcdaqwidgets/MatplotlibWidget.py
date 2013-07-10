@@ -70,7 +70,7 @@ class MatplotlibWidget(Canvas):
     def __init__(self, parent=None, title='', xlabel='', ylabel='',
                  xlim=None, ylim=None, xscale='linear', yscale='linear',
                  width=4, height=3, dpi=100, hold=False,
-                 showgrid=False):
+                 **kws):
         self.figure = Figure(figsize=(width, height), dpi=dpi)
         self.axes = self.figure.add_subplot(111)
         self.axes.set_title(title)
@@ -85,7 +85,12 @@ class MatplotlibWidget(Canvas):
         if ylim is not None:
             self.axes.set_ylim(*ylim)
         self.axes.hold(hold)
-        self.axes.grid(showgrid)
+        # with kws, can pass in other items
+        self.axes.grid(kws.pop('showgrid', False))
+        for key, value in kws.items():
+            func = self.axes.__getattribute__('set_'+key)
+            if func is not None:
+                func(value)
 
         Canvas.__init__(self, self.figure)
         self.setParent(parent)
