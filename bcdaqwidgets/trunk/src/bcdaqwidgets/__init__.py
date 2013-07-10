@@ -40,3 +40,4 @@ __svnid__         = u"$Id$"
 __revision__       = __svnid__.split(" ")[2]
 #__full_version__ = u"%s.%s-r%s" % (__version__, __minor_version__, __revision__) 
 __full_version__  = u"v%s.%s, %s" % (__version__, __minor_version__, __yyyymmdd__) 
+__all__ = ['bcdaqwidgets', ]
