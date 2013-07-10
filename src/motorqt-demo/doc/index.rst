@@ -34,6 +34,6 @@ Now, our application, built in parts
 * :ref:`mainwindow`
 
 .. toctree::
-   :maxdepth: 1
+   :hidden:
    
    contents
