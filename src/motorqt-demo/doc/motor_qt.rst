@@ -1,5 +1,7 @@
 .. $Id$
 
+.. _motor_qt:
+
 motor_qt Module
 ===============
 

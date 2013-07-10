@@ -28,27 +28,12 @@ and PySide (Python support for Qt4).
 Now, our application, built in parts
 ----------------------------------------
 
-Contents:
+* :ref:`motor_qt`
+* :ref:`multimotor`
+* :ref:`listpanel`
+* :ref:`mainwindow`
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    
-   modules
-
-----------------
-
-Contents:
-
-.. toctree::
-   :maxdepth: 2
-   
-   other
-
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
-
+   contents

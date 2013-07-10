@@ -1,5 +1,7 @@
 .. $Id$
 
+.. _mainwindow:
+
 mainwindow  Module
 ==================
 
