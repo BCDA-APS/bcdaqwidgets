@@ -1,5 +1,7 @@
 .. $Id$
 
+.. _multimotor:
+
 multimotor Module
 =================
 

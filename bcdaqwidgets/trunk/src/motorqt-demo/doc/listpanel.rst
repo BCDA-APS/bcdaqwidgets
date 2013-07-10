@@ -1,5 +1,7 @@
 .. $Id$
 
+.. _listpanel:
+
 listpanel Module
 ================
 
