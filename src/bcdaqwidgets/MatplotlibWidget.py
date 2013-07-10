@@ -69,7 +69,8 @@ class MatplotlibWidget(Canvas):
     """
     def __init__(self, parent=None, title='', xlabel='', ylabel='',
                  xlim=None, ylim=None, xscale='linear', yscale='linear',
-                 width=4, height=3, dpi=100, hold=False):
+                 width=4, height=3, dpi=100, hold=False,
+                 showgrid=False):
         self.figure = Figure(figsize=(width, height), dpi=dpi)
         self.axes = self.figure.add_subplot(111)
         self.axes.set_title(title)
@@ -84,12 +85,17 @@ class MatplotlibWidget(Canvas):
         if ylim is not None:
             self.axes.set_ylim(*ylim)
         self.axes.hold(hold)
+        self.axes.grid(showgrid)
 
         Canvas.__init__(self, self.figure)
         self.setParent(parent)
 
         Canvas.setSizePolicy(self, QSizePolicy.Expanding, QSizePolicy.Expanding)
         Canvas.updateGeometry(self)
+
+    def addPlot(self, *args, **kws):
+        p1, = self.axes.plot(*args, **kws)
+        return p1
 
     def sizeHint(self):
         w, h = self.get_width_height()

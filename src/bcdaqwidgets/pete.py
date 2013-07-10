@@ -1,12 +1,5 @@
 #!/usr/bin/env python
 
-import epics
-
-TIME_PV = 'S:SRtimeCP'
-CURRENT_PV = 'S:SRcurrentCP'
-
-
-###################################################################################
 
 import sys
 import matplotlib
@@ -20,18 +13,56 @@ from matplotlib.figure import Figure
 from PySide import QtCore, QtGui
 
 from MatplotlibWidget import MatplotlibWidget
+import epics
+import datetime
+import time
 
 
-def getData():
+TIME_PV = 'S:SRtimeCP'
+CURRENT_PV = 'S:SRcurrentCP'
+
+
+def _readAsciiData():
+    ''''read test data from text file'''
+    with open('aps_data.txt', 'r') as fp:
+        buf = fp.read()
+    x, y = [], []
+    for line in buf.splitlines():
+        line = line.strip()
+        if len(line) > 0 and not line.startswith('#'):  # skip any comment lines
+            try:
+                fx, fy = map(float, line.split())
+                x.append(fx)
+                y.append(fy)
+            except:
+                pass
+    timestamp = '2013-07-09 15:00:00'       # approximate
+    epoch = time.mktime(time.strptime(timestamp, '%Y-%m-%d %H:%M:%S'))
+    return epoch, x, y
+
+
+def _readXmlData():
+    ''''read test data from XML file'''
+    import xml.etree.cElementTree as ElementTree
+    root = ElementTree.parse('aps_data.xml').getroot()
+    timestamp = root.attrib['datetime']
+    epoch = time.mktime(time.strptime(timestamp, '%Y-%m-%d %H:%M:%S'))
+    x = map(float, root.find('time').text.strip().split())
+    y = map(float, root.find('current').text.strip().split())
+    return epoch, x, y
+
+
+def getTestData():
+    '''get some test data, either from EPICS or a local data file'''
     xpv = epics.PV(TIME_PV)
     ypv = epics.PV(CURRENT_PV)
     if xpv.connected and ypv.connected:
         x, y = xpv.value, ypv.value
+        epoch = time.mktime(time.gmtime())
     else:
-        with open('aps_data.txt', 'r') as fp:
-            buf = [map(float,xypair.split()) for xypair in fp.read().splitlines()[3:]]
-        x, y = zip(*buf)
-    return x, y
+        #epoch, x, y = _readAsciiData()
+        epoch, x, y = _readXmlData()
+    return epoch, x, y
 
 
 class MplWidget(QtGui.QWidget):
@@ -41,20 +72,17 @@ class MplWidget(QtGui.QWidget):
         layout = QtGui.QVBoxLayout()
         self.setLayout(layout)
         
-        widget = MatplotlibWidget()
+        widget = MatplotlibWidget(title='APS Storage Ring 24-hour History',
+                                  xlabel='time before now, ht',
+                                  ylabel='',
+                                  hold=True,
+                                  showgrid=True)
         layout.addWidget(widget)
         
-        time_data, current_data = getData()
-        p1, = widget.axes.plot(time_data, current_data, 'r-', label='history')
-        # TODO: learn how to plot two or more data on one graph
-        # TODO: learn how to add a data set later
-        #widget.axes.plot(time_data, current_data, [-5, -2], [1,20])
-        #p2, = widget.axes.plot([-5, -2], [1,20], 'bo-', label='2 points')
-        #widget.axes.legend([p1, p2], ['history', '2 points'])
-        widget.axes.set_title('APS Storage Ring 24-hour History')
-        widget.axes.set_xlabel('t, hr')
-        widget.axes.set_ylabel('current, mA')
-        widget.axes.grid(True)
+        epoch, time_data, current_data = getTestData()
+        widget.addPlot(time_data, current_data, 'r-',  label='history')
+        widget.addPlot([-5, -2],  [1,20],       'bo-', label='2 points')
+        widget.axes.legend()
         '''
         MatPlotLib mouse events
         
@@ -84,29 +112,35 @@ class MplWidget(QtGui.QWidget):
                 event.button, event.x, event.y, event.xdata, event.ydata)
         
     def on_figure_enter(self, event):
-        print 'on_figure_enter: %s' % str(event.canvas.figure)
-        self.default_color['figure'] = event.canvas.figure.get_facecolor()
-        event.canvas.figure.set_facecolor('bisque')
+        fig = event.canvas.figure
+        print 'on_figure_enter: %s' % str(fig)
+        if self.default_color['figure'] is None:
+            self.default_color['figure'] = fig.get_facecolor()
+        fig.set_facecolor('bisque')
         event.canvas.draw()
         
     def on_figure_leave(self, event):
-        print 'on_figure_leave: %s' % str(event.canvas.figure)
+        fig = event.canvas.figure
+        print 'on_figure_leave: %s' % str(fig)
         if self.default_color['figure'] is not None:
-            event.canvas.figure.set_facecolor(self.default_color['figure'])
+            fig.set_facecolor(self.default_color['figure'])
         event.canvas.draw()
         
     def on_axes_enter(self, event):
+        axes = event.inaxes
         print 'on_axes_enter: %s, x=%d, y=%d, xdata=%f, ydata=%f' % (
-                str(event.inaxes), event.x, event.y, event.xdata, event.ydata)
-        self.default_color['axes'] = event.inaxes.patch.get_facecolor()
-        event.inaxes.patch.set_facecolor('mintcream')
+                str(axes), event.x, event.y, event.xdata, event.ydata)
+        if self.default_color['axes'] is None:
+            self.default_color['axes'] = axes.patch.get_facecolor()
+        axes.patch.set_facecolor('#ccccff')
         event.canvas.draw()
         
     def on_axes_leave(self, event):
+        axes = event.inaxes
         print 'on_axes_leave: %s, x=%d, y=%d, xdata=%f, ydata=%f' % (
-                str(event.inaxes), event.x, event.y, event.xdata, event.ydata)
+                str(axes), event.x, event.y, event.xdata, event.ydata)
         if self.default_color['axes'] is not None:
-            event.inaxes.patch.set_facecolor(self.default_color['axes'])
+            axes.patch.set_facecolor(self.default_color['axes'])
         event.canvas.draw()
 
 
@@ -122,7 +156,7 @@ class PlotMyWay(QtGui.QWidget):
         fig.suptitle('matplotlib testing')
         xpv = epics.PV(TIME_PV)
         ypv = epics.PV(CURRENT_PV)
-        x, y = getData()
+        epoch, x, y = getTestData()
         ax = fig.add_subplot(111)
         ax.set_xlabel('time since now, hours')
         ax.set_ylabel('APS storage ring current, mA')

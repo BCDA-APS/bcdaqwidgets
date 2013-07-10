@@ -1,6 +1,6 @@
-APS Storage Ring History, measured on 2013-07-09
-S:SRtimeCP      S:SRcurrentCP
-time, hr       	current, mA     
+#APS Storage Ring History, measured on 2013-07-09
+#S:SRtimeCP      S:SRcurrentCP
+#time, hr       	current, mA     
 -23.9833       	101.963        
 -23.9667       	102.175        
 -23.95         	102.181        
