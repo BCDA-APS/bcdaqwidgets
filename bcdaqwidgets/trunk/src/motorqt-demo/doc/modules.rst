@@ -1,7 +1,9 @@
 .. $Id$
 
-Modules
-=======
+.. _modules:
+
+Modules to build the GUI
+============================
 
 These modules are used to build up the GUI.
 
