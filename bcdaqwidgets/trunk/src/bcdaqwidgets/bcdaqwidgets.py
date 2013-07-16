@@ -57,14 +57,17 @@ def typesafe_enum(*sequential, **named):
     enums = dict(zip(sequential, range(len(sequential))), **named)
     return type('TypesafeEnum', (), enums)
 
-
-AllowedStates = typesafe_enum('DISCONNECTED', 'CONNECTED', 'WARNING', 'ALARM')
+AllowedStates = typesafe_enum('DISCONNECTED', 'CONNECTED',)
 CLUT = {   # clut: Color LookUp Table
-    AllowedStates.DISCONNECTED:     "#ffffff",      # white
-    AllowedStates.CONNECTED:        "#e0e0e0",      # a bit darker than default #f0f0f0
-    AllowedStates.WARNING:          "#ffff00",      # yellow
-    AllowedStates.ALARM:            "#ff0000",      # red
+    AllowedStates.DISCONNECTED: "#ffffff",      # white
+    AllowedStates.CONNECTED:    "#e0e0e0",      # a bit darker than default #f0f0f0
+    
 }
+
+SeverityColor = typesafe_enum('NO_ALARM', 'MINOR', 'MAJOR',)
+SeverityColor.NO_ALARM =     "green"        # green
+SeverityColor.MINOR =        "#ff0000"      # dark orange since yellow looks bad against gray
+SeverityColor.MAJOR =        "red"          # red
 
 
 class StyleSheet(object):
@@ -83,7 +86,7 @@ class StyleSheet(object):
         })
     
     '''
-    
+
     def __init__(self, widget, sty={}):
         '''
         :param obj widget: the Qt widget on which to apply the style sheet
@@ -93,21 +96,21 @@ class StyleSheet(object):
         widgetclass = str(type(widget)).strip('>').split('.')[-1].strip("'")
         self.widgetclass = widgetclass
         self.style_cache = dict(sty)
-    
+
     def clearCache(self):
         '''clear the internal cache'''
         self.style_cache = {}
-    
+
     def updateStyleSheet(self, sty={}):
         '''change specified styles and apply all to widget'''
         self._updateCache(sty)
         self.widget.setStyleSheet(str(self))
-    
+
     def _updateCache(self, sty={}):
         '''update internal cache with specified styles'''
         for key, value in sty.items():
             self.style_cache[key] = value
-    
+
     def __str__(self):
         '''returns a CSS text with the cache settings'''
         s = self.widgetclass + ' {\n'
@@ -133,7 +136,7 @@ class BcdaQSignalDef(QtCore.QObject):
 class BcdaQWidgetSuper(object):
     '''superclass for EPICS-aware widgets'''
 
-    def __init__(self, pvname=None):
+    def __init__(self, pvname=None, useAlarmState=False):
         self.style_dict = {}
         self.text_cache = ' ' * 4
         self.pv = None                           # PyEpics PV object
@@ -142,9 +145,9 @@ class BcdaQWidgetSuper(object):
         self.state = AllowedStates.DISCONNECTED
         self.labelSignal = BcdaQSignalDef()
         self.clut = dict(CLUT)
-        
-        self.useAlarmState = False
-        self.severity_color_list = ['green', 'orange', 'red']
+
+        self.useAlarmState = useAlarmState
+        self.severity_color_list = [SeverityColor.NO_ALARM, SeverityColor.MINOR, SeverityColor.MAJOR]
 
         # for internal use persisting the various styleSheet settings
         self._style_sheet = StyleSheet(self)
@@ -212,14 +215,14 @@ class BcdaQWidgetSuper(object):
         '''set the text of the widget (threadsafe update)'''
         # pull the new text from the cache (set by onPVChange() method)
         self.setText(self.text_cache)
-        
+
         # if desired, color the text based on the alarm severity
         if self.useAlarmState and self.pv is not None:
             self.pv.get_ctrlvars()
             if self.pv.severity is not None:
                 color = self.severity_color_list[self.pv.severity]
                 self.updateStyleSheet({'color': color})
-    
+
     def updateStyleSheet(self, changes_dict):
         '''update the widget's stylesheet'''
         self._style_sheet.updateStyleSheet(changes_dict)
@@ -240,21 +243,21 @@ class BcdaQLabel(QtGui.QLabel, BcdaQWidgetSuper):
     
     '''
 
-    def __init__(self, pvname=None):
+    def __init__(self, pvname=None, useAlarmState=False):
         ''':param str text: initial Label text (really, we can ignore this)'''
-        BcdaQWidgetSuper.__init__(self)
+        BcdaQWidgetSuper.__init__(self, useAlarmState=useAlarmState)
         QtGui.QLabel.__init__(self, self.text_cache)
 
         # define the signals we'll use in the camonitor handler to update the GUI
         self.labelSignal = BcdaQSignalDef()
         self.labelSignal.newBgColor.connect(self.SetBackgroundColor)
         self.labelSignal.newText.connect(self.SetText)
-        
+
         self.updateStyleSheet({
-            'background-color': 'bisque',
-            'border': '1px solid gray',
-            'font': 'bold',
-        })
+                               'background-color': 'bisque', 
+                               'border': '1px solid gray', 
+                               'font': 'bold', 
+                               })
 
         self.clut = dict(CLUT)
         self.pv = None
@@ -263,7 +266,7 @@ class BcdaQLabel(QtGui.QLabel, BcdaQWidgetSuper):
         self.state = AllowedStates.DISCONNECTED
         self.SetBackgroundColor()
         self.setAlignment(QtCore.Qt.AlignHCenter)
-        
+
         if pvname is not None and isinstance(pvname, str):
             self.ca_connect(pvname)
 
@@ -288,7 +291,7 @@ class BcdaQLineEdit(QtGui.QLineEdit, BcdaQWidgetSuper):
 
     '''
 
-    def __init__(self, pvname=None):
+    def __init__(self, pvname=None, useAlarmState=False):
         ''':param str text: initial Label text (really, we can ignore this)'''
         BcdaQWidgetSuper.__init__(self)
         QtGui.QLineEdit.__init__(self, self.text_cache)
@@ -300,14 +303,14 @@ class BcdaQLineEdit(QtGui.QLineEdit, BcdaQWidgetSuper):
         self.clut = dict(CLUT)
         self.clut[AllowedStates.CONNECTED] = "bisque"
         self.updateStyleSheet({
-            'background-color': 'bisque',
-            'border': '3px inset gray',
-        })
+                               'background-color': 'bisque', 
+                               'border': '3px inset gray', 
+                               })
 
         self.SetBackgroundColor()
         self.setAlignment(QtCore.Qt.AlignHCenter)
         self.returnPressed.connect(self.onReturnPressed)
-        
+
         if pvname is not None and isinstance(pvname, str):
             self.ca_connect(pvname)
 
@@ -354,10 +357,7 @@ class BcdaQPushButton(QtGui.QPushButton, BcdaQWidgetSuper):
         self.labelSignal.newText.connect(self.SetText)
 
         self.clut = dict(CLUT)
-        self.updateStyleSheet({
-            'font': 'bold',
-            #'border': '2px solid gray',
-        })
+        self.updateStyleSheet({'font': 'bold',})
 
         self.pv = None
         self.ca_callback = None
@@ -367,10 +367,10 @@ class BcdaQPushButton(QtGui.QPushButton, BcdaQWidgetSuper):
         self.SetBackgroundColor()
         self.clicked[bool].connect(self.onPressed)
         self.released.connect(self.onReleased)
-        
+
         self.pressed_value = None
         self.released_value = None
-        
+
         if pvname is not None and isinstance(pvname, str):
             self.ca_connect(pvname)
 
@@ -451,7 +451,7 @@ class BcdaQToggleButton(BcdaQPushButton):
         BcdaQPushButton.__init__(self)
         self.value_names = {1: 'change to 0', 0: 'change to 1'}
         self.setToolTip('tell EPICS PV to do this')
-        
+
         if pvname is not None and isinstance(pvname, str):
             self.ca_connect(pvname)
 
@@ -507,8 +507,8 @@ class DemoView(QtGui.QWidget):
         if pvname is not None:
             self.ca_connect(pvname)
 
-            layout.addWidget(QtGui.QLabel('BcdaQLabel'), 1, 0)
-            layout.addWidget(BcdaQLabel(pvname=pvname), 1, 1)
+            layout.addWidget(QtGui.QLabel('BcdaQLabel with alarm colors'), 1, 0)
+            layout.addWidget(BcdaQLabel(pvname=pvname, useAlarmState=True), 1, 1)
 
             layout.addWidget(QtGui.QLabel('BcdaQLineEdit'), 2, 0)
             layout.addWidget(BcdaQLineEdit(pvname=pvname), 2, 1)
@@ -527,7 +527,7 @@ class DemoView(QtGui.QWidget):
     def SetBackgroundColor(self, *args, **kw):
         '''toggle the background color of self.value via its stylesheet'''
         self.toggle = not self.toggle
-        color = {False: "#ccc333", True:  "#cccccc",}[self.toggle]
+        color = {False: "#ccc333", True: "#cccccc",}[self.toggle]
         self.value.updateStyleSheet({'background-color': color})
 
 
@@ -542,8 +542,12 @@ def main():
 
     # positional arguments
     # not required if GUI option is selected
-    parser.add_argument('test_PV', action='store', nargs='?',
-                        help="EPICS PV name", default="syn:datetime")
+    parser.add_argument('test_PV', 
+                        action='store', 
+                        nargs='?',
+                        help="EPICS PV name", 
+                        default="csuarez:cathodeTempM", 
+                        )
     results = parser.parse_args()
 
     app = QtGui.QApplication(sys.argv)
