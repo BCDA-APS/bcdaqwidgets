@@ -36,7 +36,8 @@ widget                         description
 
 import epics
 try:
-    from PyQt4 import QtCore, QtGui, pyqtSignal
+    from PyQt4 import QtCore, QtGui
+    pyqtSignal = QtCore.pyqtSignal
 except:
     from PySide import QtCore, QtGui
     pyqtSignal = QtCore.Signal
