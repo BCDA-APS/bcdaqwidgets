@@ -28,7 +28,8 @@ class DemoView(QtGui.QWidget):
 
     '''
 
-    def __init__(self, parent=None, rbv='', dmov=''):
+    def __init__(self, parent=None, rbv='', dmov=None):
+        '''constructor'''
         QtGui.QWidget.__init__(self, parent)
 
         layout = QtGui.QGridLayout()
@@ -37,31 +38,35 @@ class DemoView(QtGui.QWidget):
         layout.addWidget(self.value, 0, 1)
         self.setLayout(layout)
 
-        self.dmov = epics.PV(pvname=dmov, callback=self.onDmovChanged)
-        
+        if dmov is not None:
+            self.dmov = epics.PV(pvname=dmov, callback=self.onDmovChanged)
+
         self.dmov_bg_clut = {'not connected': 'white', '0': '#88ff88', '1': 'transparent'}
         self.dmov_bg_color = None
-        
+
         self.dmovSignal = bcdaqwidgets.BcdaQSignalDef()
         self.dmovSignal.newBgColor.connect(self.SetBackgroundColor)
 
     def onDmovChanged(self, *args, **kw):
-        '''changes the background color when the motor is moving or not moving'''          
+        '''epics pv callback when motor starts or stops moving'''          
         if not self.dmov.connected:     # white and displayed text is ' '
-#             print 'not connected'
             self.dmov_bg_color = self.dmov_bg_clut['not connected']
         else:
-#             print str(self.dmov.get())
-            self.dmov_bg_color = self.dmov_bg_clut[str(self.dmov.get())]
-        
+            value = str(self.dmov.get())
+            if value in self.dmov_bg_clut:
+                self.dmov_bg_color = self.dmov_bg_clut[value]
+        # trigger the background color to change
         self.dmovSignal.newBgColor.emit()
-            
+
     def SetBackgroundColor(self, *args, **kw):
+        '''changes the background color of the widget'''
         if self.dmov_bg_color is not None:
             self.value.updateStyleSheet({'background-color': self.dmov_bg_color})
             self.dmov_bg_color = None
+
             
 #------------------------------------------------------------------
+
 
 def main():
     '''command-line interface to test this GUI widget'''
