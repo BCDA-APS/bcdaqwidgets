@@ -245,10 +245,14 @@ class BcdaQLabel(QtGui.QLabel, BcdaQWidgetSuper):
     
         widget = bcdaqwidgets.BcdaQLabel()
         widget.ca_connect("example:m1.RBV")
+        
+    :param str pvname: epics process variable name for this widget
+    :param bool useAlarmState: change the text color based on pv severity
+    :param str bgColorPv: update widget's background color based on this pv's value
     
     '''
 
-    def __init__(self, pvname=None, useAlarmState=False):
+    def __init__(self, pvname=None, useAlarmState=False, bgColorPv=None):
         ''':param str text: initial Label text (really, we can ignore this)'''
         BcdaQWidgetSuper.__init__(self, useAlarmState=useAlarmState)
         QtGui.QLabel.__init__(self, self.text_cache)
@@ -274,6 +278,32 @@ class BcdaQLabel(QtGui.QLabel, BcdaQWidgetSuper):
 
         if pvname is not None and isinstance(pvname, str):
             self.ca_connect(pvname)
+
+        if bgColorPv is not None:
+            self.bgColorObj = epics.PV(pvname=bgColorPv, callback=self.onBgColorObjChanged)
+
+        self.bgColor_clut = {'not connected': 'white', '0': '#88ff88', '1': 'transparent'}
+        self.bgColor = None
+
+        self.bgColorSignal = BcdaQSignalDef()
+        self.bgColorSignal.newBgColor.connect(self.SetBackgroundColorExtra)
+
+    def onBgColorObjChanged(self, *args, **kw):
+        '''epics pv callback when bgColor PV changes'''          
+        if not self.bgColorObj.connected:     # white and displayed text is ' '
+            self.bgColor = self.bgColor_clut['not connected']
+        else:
+            value = str(self.bgColorObj.get())
+            if value in self.bgColor_clut:
+                self.bgColor = self.bgColor_clut[value]
+        # trigger the background color to change
+        self.bgColorSignal.newBgColor.emit()
+
+    def SetBackgroundColorExtra(self, *args, **kw):
+        '''changes the background color of the widget'''
+        if self.bgColor is not None:
+            self.updateStyleSheet({'background-color': self.bgColor})
+            self.bgColor = None
 
     def SetBackgroundColor(self, *args, **kw):
         '''set the background color of the widget via its stylesheet'''
@@ -495,7 +525,7 @@ class DemoView(QtGui.QWidget):
     This is a variation of EPICS PV Probe.
     '''
 
-    def __init__(self, parent=None, pvname=None):
+    def __init__(self, parent=None, pvname=None, bgColorPv=None):
         QtGui.QWidget.__init__(self, parent)
 
         layout = QtGui.QGridLayout()
@@ -515,13 +545,18 @@ class DemoView(QtGui.QWidget):
             layout.addWidget(QtGui.QLabel('BcdaQLabel with alarm colors'), 1, 0)
             layout.addWidget(BcdaQLabel(pvname=pvname, useAlarmState=True), 1, 1)
 
-            layout.addWidget(QtGui.QLabel('BcdaQLineEdit'), 2, 0)
-            layout.addWidget(BcdaQLineEdit(pvname=pvname), 2, 1)
+            pvnameBg = pvname.split('.')[0] + '.DMOV'
+            lblWidget = BcdaQLabel(pvname=pvname, bgColorPv=pvnameBg)
+            layout.addWidget(QtGui.QLabel('BcdaQLabel with BG color change due to moving motor'), 2, 0)
+            layout.addWidget(lblWidget, 2, 1)
+
+            layout.addWidget(QtGui.QLabel('BcdaQLineEdit'), 3, 0)
+            layout.addWidget(BcdaQLineEdit(pvname=pvname), 3, 1)
 
             pvname = pvname.split('.')[0] + '.PROC'
             widget = BcdaQMomentaryButton(label=pvname, pvname=pvname)
-            layout.addWidget(QtGui.QLabel('BcdaQMomentaryButton'), 3, 0)
-            layout.addWidget(widget, 3, 1)
+            layout.addWidget(QtGui.QLabel('BcdaQMomentaryButton'), 4, 0)
+            layout.addWidget(widget, 4, 1)
 
     def ca_connect(self, pvname):
         self.value.ca_connect(pvname, ca_callback=self.callback)
@@ -551,7 +586,7 @@ def main():
                         action='store', 
                         nargs='?',
                         help="EPICS PV name", 
-                        default="csuarez:cathodeTempM", 
+                        default="prj:m1.RBV", 
                         )
     results = parser.parse_args()
 
