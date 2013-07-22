@@ -35,7 +35,11 @@ widget                         description
 
 
 import epics
-from PySide import QtGui, QtCore
+try:
+    from PyQt4 import QtCore, QtGui, pyqtSignal
+except:
+    from PySide import QtCore, QtGui
+    pyqtSignal = QtCore.Signal
 
 
 def typesafe_enum(*sequential, **named):
@@ -128,9 +132,9 @@ class BcdaQSignalDef(QtCore.QObject):
     # see: http://www.pyside.org/docs/pyside/PySide/QtCore/Signal.html
     # see: http://zetcode.com/gui/pysidetutorial/eventsandsignals/
 
-    newFgColor = QtCore.Signal()
-    newBgColor = QtCore.Signal()
-    newText    = QtCore.Signal()
+    newFgColor = pyqtSignal()
+    newBgColor = pyqtSignal()
+    newText    = pyqtSignal()
 
 
 class BcdaQWidgetSuper(object):
