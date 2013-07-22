@@ -37,27 +37,30 @@ class DemoView(QtGui.QWidget):
         layout.addWidget(self.value, 0, 1)
         self.setLayout(layout)
 
-        self.colorPV = False
+        self.dmov = epics.PV(pvname=dmov, callback=self.onDmovChanged)
+        
+        self.dmov_bg_clut = {'not connected': 'white', '0': '#88ff88', '1': 'transparent'}
+        self.dmov_bg_color = None
+        
+        self.dmovSignal = bcdaqwidgets.BcdaQSignalDef()
+        self.dmovSignal.newBgColor.connect(self.SetBackgroundColor)
 
-        self.ca_connect(rbv)
-        self.ca_connect(dmov)
-
-    def ca_connect(self, pvname):
-        self.value.ca_connect(pvname, ca_callback=self.SetBackgroundColor)
-
-    def SetBackgroundColor(self, *args, **kw):
+    def onDmovChanged(self, *args, **kw):
         '''changes the background color when the motor is moving or not moving'''          
-        if self.connect==False:     # white and displayed text is ' '
-            self.updateStyleSheet({'background-color': 'white'})
+        if not self.dmov.connected:     # white and displayed text is ' '
+#             print 'not connected'
+            self.dmov_bg_color = self.dmov_bg_clut['not connected']
         else:
-            self.colorPV = not self.colorPV
-            if dmov == 1:
-                self.colorPV = False
-            else:   # motor is moving
-                self.colorPV = True
-            color = {False: "transparent", True: "green",}[self.colorPV]
-            self.updateStyleSheet({'background-color': color})
-
+#             print str(self.dmov.get())
+            self.dmov_bg_color = self.dmov_bg_clut[str(self.dmov.get())]
+        
+        self.dmovSignal.newBgColor.emit()
+            
+    def SetBackgroundColor(self, *args, **kw):
+        if self.dmov_bg_color is not None:
+            self.value.updateStyleSheet({'background-color': self.dmov_bg_color})
+            self.dmov_bg_color = None
+            
 #------------------------------------------------------------------
 
 def main():
