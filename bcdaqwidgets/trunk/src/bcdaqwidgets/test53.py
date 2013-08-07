@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 
 ########### SVN repository information ###################
-# $Date: 2013-07-16 17:08:49 -0500 (Tue, 16 Jul 2013) $
-# $Author: csuarez $
-# $Revision: 1417 $
-# $URL: https://subversion.xray.aps.anl.gov/bcdaext/bcdaqwidgets/trunk/src/bcdaqwidgets/bcdaqwidgets.py $
-# $Id: bcdaqwidgets.py 1417 2013-07-16 22:08:49Z csuarez $
+# $Date$
+# $Author$
+# $Revision$
+# $URL$
+# $Id$
 ########### SVN repository information ###################
 
 '''
