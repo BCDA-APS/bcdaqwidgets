@@ -41,7 +41,10 @@ class DemoView(QtGui.QWidget):
         if dmov is not None:
             self.dmov = epics.PV(pvname=dmov, callback=self.onDmovChanged)
 
-        self.dmov_bg_clut = {'not connected': 'white', '0': '#88ff88', '1': 'transparent'}
+        self.dmov_bg_clut = {'not connected':   'white', 
+                             '0':               '#8f8', 
+                             '1':               'transparent'
+                             }
         self.dmov_bg_color = None
 
         self.dmovSignal = bcdaqwidgets.BcdaQSignalDef()

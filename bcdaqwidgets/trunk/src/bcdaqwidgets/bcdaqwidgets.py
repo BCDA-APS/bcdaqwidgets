@@ -525,7 +525,7 @@ class DemoView(QtGui.QWidget):
     This is a variation of EPICS PV Probe.
     '''
 
-    def __init__(self, parent=None, pvname=None, bgColorPv=None):
+    def __init__(self, parent=None, pvname=None, bgColorPvname=None):
         QtGui.QWidget.__init__(self, parent)
 
         layout = QtGui.QGridLayout()
@@ -546,7 +546,7 @@ class DemoView(QtGui.QWidget):
             layout.addWidget(BcdaQLabel(pvname=pvname, useAlarmState=True), 1, 1)
 
             pvnameBg = pvname.split('.')[0] + '.DMOV'
-            lblWidget = BcdaQLabel(pvname=pvname, bgColorPv=pvnameBg)
+            lblWidget = BcdaQLabel(pvname=pvname, bgColorPvname=pvnameBg)
             layout.addWidget(QtGui.QLabel('BcdaQLabel with BG color change due to moving motor'), 2, 0)
             layout.addWidget(lblWidget, 2, 1)
 
