@@ -1,0 +1,1 @@
+http://downloadandlearning.blogspot.com/2013/04/making-custom-widget-in-pyqt.html
