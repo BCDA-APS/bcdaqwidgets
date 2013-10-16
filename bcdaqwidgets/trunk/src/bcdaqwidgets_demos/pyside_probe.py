@@ -1,25 +1,19 @@
 #!/usr/bin/env python
 
-########### SVN repository information ###################
-# $Date$
-# $Author$
-# $Revision$
-# $URL$
-# $Id$
-########### SVN repository information ###################
+'''
+PySide implementation of EPICS probe
 
-# from Matt Newville, CARS, University of Chicago
+:author: Matt Newville, CARS, University of Chicago
+:note: Does not use bcdaqwidgets
+'''
 
 import epics
 import os
 import sys
 from PySide.QtGui import QWidget, QLabel, QLineEdit, QGridLayout, QApplication
 
-sys.path.insert(0, os.path.abspath('..'))
-import bcdaqwidgets
-
 class PVProbe(QWidget):
-    ''' '''
+    '''frame that monitors a user-entered EPICS PV'''
     def __init__(self, parent=None):
         QWidget.__init__(self, parent)
 
@@ -41,16 +35,32 @@ class PVProbe(QWidget):
         self.setWindowTitle("PySide PV Probe:")
 
     def onPVNameReturn(self):
+        '''responds when user enters a new PV'''
         if self.pv is not None:
             self.pv.remove_callback()
             self.pv.ca_disconnect()
         self.pv = epics.PV(self.pvname.text(), callback=self.onPVChange)
 
     def onPVChange(self, pvname=None, char_value=None, **kws):
+        '''updates the widget (not thread-safe)'''
         self.value.setText(char_value)
 
-if __name__ == '__main__':
+
+def main():
     app = QApplication(sys.argv)
     probe = PVProbe()
     probe.show()
     sys.exit(app.exec_())
+
+
+if __name__ == '__main__':
+    main()
+
+
+########### SVN repository information ###################
+# $Date$
+# $Author$
+# $Revision$
+# $URL$
+# $Id$
+########### SVN repository information ###################
