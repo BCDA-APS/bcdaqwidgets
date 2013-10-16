@@ -26,6 +26,19 @@ import bcdaqwidgets
 
 requires = ['Sphinx>=0.6']
 
+packages = {}
+for pkg in ('bcdaqwidgets', 'bcdaqwidgets_demos', 'motorqt_demo'):
+    packages[pkg]       = os.path.join('src', pkg)
+
+console_scripts = []
+for launcher, method_path in {
+    'pvview': 'bcdaqwidgets.pvview:main',
+    #'pyside_probe': 'bcdaqwidgets_demos.pyside_probe:main',
+    'motor_qt': 'motorqt_demo.motor_qt:main',
+    'multimotor': 'motorqt_demo.multimotor:main',
+                 }.items():
+    console_scripts.append(launcher + ' = ' + method_path)
+
 setup(
         name=bcdaqwidgets.__project__,
         version=bcdaqwidgets.__version__,
@@ -34,12 +47,9 @@ setup(
         author=', '.join(bcdaqwidgets.__authors__),
         author_email=bcdaqwidgets.__author_email__,
         url=bcdaqwidgets.__url__,
-        packages=['bcdaqwidgets', 'bcdaqwidgets_demos', ],
+        packages=packages.keys(),
         license = bcdaqwidgets.__license__,
-        package_dir={
-            'bcdaqwidgets':        os.path.join('src', 'bcdaqwidgets'),
-            'bcdaqwidgets_demos':  os.path.join('src', 'bcdaqwidgets_demos'),
-        },
+        package_dir=packages,
         platforms='any',
         zip_safe=False,
         classifiers=[
@@ -56,10 +66,7 @@ setup(
             'Topic :: Utilities',
         ],
       entry_points={
-          # create & install launchers in <python>/bin
-          'console_scripts':[
-              'pvview = bcdaqwidgets_demos.pvview:main',
-              'pyside_probe = bcdaqwidgets_demos.pyside_probe:main',
-          ]
+          # create & install console_scripts in <python>/bin
+          'console_scripts': console_scripts,
       },
      )
