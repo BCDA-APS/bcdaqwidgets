@@ -6,7 +6,7 @@
 export PROJECT="BcdaQWidgets"
 export SOURCE_DIR="build"
 export TARGET_DIR="/home/joule/SVN/subversion/bcdaext/ "
-export MAKE_TARGET="all"
+export MAKE_TARGET="html"
 export MAKE_DIR="docs"
 export PATH=/APSshare/epd/rh6-x86/bin/:$PATH
 
