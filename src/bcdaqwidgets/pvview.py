@@ -40,8 +40,7 @@ class PVView(QWidget):
             return
         row = len(self.db) + 1
         label = QLabel(pvname)
-        widget = bcdaqwidgets.BcdaQLabel()
-        widget.ca_connect(pvname)
+        widget = bcdaqwidgets.BcdaQLabel(pvname=pvname)
         widget.useAlarmState = True
         self.db[pvname] = widget
         self.grid.addWidget(label, row, 0)
