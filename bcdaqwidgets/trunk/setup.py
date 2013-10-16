@@ -20,7 +20,6 @@ from setuptools import setup, find_packages
 
 import os, sys
 
-#sys.path.insert(0, os.path.abspath(os.path.join('src', 'APSpy')))
 sys.path.insert(0, os.path.join('src', ))
 import bcdaqwidgets
 
