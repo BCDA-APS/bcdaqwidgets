@@ -6,7 +6,7 @@ Demonstrations: bcdaqwidgets_demos
 pvview
 -----------
 
-.. automodule:: bcdaqwidgets_demos.pvview
+.. automodule:: bcdaqwidgets.pvview
     :members:
 
 vlinac
