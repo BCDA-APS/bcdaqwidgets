@@ -30,16 +30,16 @@ setup(
         name=bcdaqwidgets.__project__,
         version=bcdaqwidgets.__version__,
         description=bcdaqwidgets.__description__,
+        long_description = bcdaqwidgets.__long_description__,
         author=', '.join(bcdaqwidgets.__authors__),
         author_email=bcdaqwidgets.__author_email__,
         url=bcdaqwidgets.__url__,
-        packages=bcdaqwidgets.__all__,
+        packages=['bcdaqwidgets', 'bcdaqwidgets_demos', ],
         license = bcdaqwidgets.__license__,
-        long_description = bcdaqwidgets.__long_description__,
         package_dir={
-                     'bcdaqwidgets':  os.path.join('src', 'bcdaqwidgets'),
-                     },
-        copyright = bcdaqwidgets.__copyright__,
+            'bcdaqwidgets':        os.path.join('src', 'bcdaqwidgets'),
+            'bcdaqwidgets_demos':  os.path.join('src', 'bcdaqwidgets_demos'),
+        },
         platforms='any',
         zip_safe=False,
         classifiers=[
@@ -55,4 +55,11 @@ setup(
             'Topic :: Software Development :: Libraries :: Python Modules',
             'Topic :: Utilities',
         ],
+      entry_points={
+          # create & install launchers in <python>/bin
+          'console_scripts':[
+              'pvview = bcdaqwidgets_demos.pvview:main',
+              'pyside_probe = bcdaqwidgets_demos.pyside_probe:main',
+          ]
+      },
      )

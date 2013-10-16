@@ -6,7 +6,7 @@ import os
 import sys
 from PySide.QtGui import QWidget, QLabel, QGridLayout, QApplication
 
-sys.path.insert(0, os.path.abspath('..'))
+#sys.path.insert(0, os.path.abspath('..'))
 import bcdaqwidgets
 
 class PVView(QWidget):
@@ -47,7 +47,8 @@ class PVView(QWidget):
         self.grid.addWidget(label, row, 0)
         self.grid.addWidget(widget, row, 1)
 
-if __name__ == '__main__':
+
+def main():
     app = QApplication(sys.argv)
     probe = PVView()
     if len(sys.argv) < 2:
@@ -56,6 +57,10 @@ if __name__ == '__main__':
         probe.add(pvname)
     probe.show()
     sys.exit(app.exec_())
+
+
+if __name__ == '__main__':
+    main()
 
 
 ########### SVN repository information ###################

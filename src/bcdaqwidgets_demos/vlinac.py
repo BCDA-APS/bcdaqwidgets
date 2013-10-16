@@ -1,15 +1,7 @@
 #!/usr/bin/env python
 
-########### SVN repository information ###################
-# $Date$
-# $Author$
-# $Revision$
-# $URL$
-# $Id$
-########### SVN repository information ###################
-
 '''
-comment
+provide a basic GUI for the APS EPICS Virtual Linac demo software
 
 Copyright (c) 2009 - 2013, UChicago Argonne, LLC.
 See LICENSE file for details.
@@ -37,6 +29,7 @@ __svnid__ = "$Id$"
 
 
 class DemoView(QtGui.QWidget):
+    '''simple entry and label widgets for the most important PVs'''
     
     def __init__(self, parent=None, prefix='unknown'):
         QtGui.QWidget.__init__(self, parent)
@@ -177,7 +170,7 @@ class DemoView(QtGui.QWidget):
 
 # - - - - - - - - - - - - - - - - - - methods
 
-def _demo_():
+def main():
     '''demonstrate use of this module'''
     user = os.environ['USER']
     app = QtGui.QApplication(sys.argv)
@@ -190,4 +183,13 @@ def _demo_():
 
 
 if __name__ == '__main__':
-    _demo_()
+    main()
+
+
+########### SVN repository information ###################
+# $Date$
+# $Author$
+# $Revision$
+# $URL$
+# $Id$
+########### SVN repository information ###################
