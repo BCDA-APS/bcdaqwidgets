@@ -69,10 +69,11 @@ CLUT = {   # clut: Color LookUp Table
     
 }
 
-SeverityColor = typesafe_enum('NO_ALARM', 'MINOR', 'MAJOR',)
+SeverityColor = typesafe_enum('NO_ALARM', 'MINOR', 'MAJOR', 'CALC_INVALID')
 SeverityColor.NO_ALARM =     "green"        # green
 SeverityColor.MINOR =        "#ff0000"      # dark orange since yellow looks bad against gray
 SeverityColor.MAJOR =        "red"          # red
+SeverityColor.CALC_INVALID = "pink"         # pink
 
 
 class StyleSheet(object):
@@ -152,7 +153,7 @@ class BcdaQWidgetSuper(object):
         self.clut = dict(CLUT)
 
         self.useAlarmState = useAlarmState
-        self.severity_color_list = [SeverityColor.NO_ALARM, SeverityColor.MINOR, SeverityColor.MAJOR]
+        self.severity_color_list = [SeverityColor.NO_ALARM, SeverityColor.MINOR, SeverityColor.MAJOR, SeverityColor.CALC_INVALID]
 
         # for internal use persisting the various styleSheet settings
         self._style_sheet = StyleSheet(self)
@@ -225,6 +226,10 @@ class BcdaQWidgetSuper(object):
         if self.useAlarmState and self.pv is not None:
             self.pv.get_ctrlvars()
             if self.pv.severity is not None:
+                if self.pv.severity < 0 or self.pv.severity >= len(self.severity_color_list):
+                    print self.pv.severity
+                    print self.severity_color_list
+                    pass
                 color = self.severity_color_list[self.pv.severity]
                 self.updateStyleSheet({'color': color})
 
