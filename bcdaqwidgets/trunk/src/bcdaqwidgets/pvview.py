@@ -6,7 +6,7 @@ import os
 import sys
 from PySide.QtGui import QWidget, QLabel, QGridLayout, QApplication
 
-#sys.path.insert(0, os.path.abspath('..'))
+sys.path.insert(0, os.path.abspath('..'))
 import bcdaqwidgets
 
 class PVView(QWidget):
@@ -59,6 +59,18 @@ def main():
 
 
 if __name__ == '__main__':
+    txt = '${P}cr:{pwm11,ai{0,1,2}:mean,{rate,period},cmd}{.DESC,}'
+    pvs = []
+    _p = ['ino:cr:' + _ for _ in ('ai0', 'ai1', 'ai2')]
+    for _ in _p:
+        pvs.append(_)
+        pvs.append(_ + ':mean')
+    pvs.insert(0, 'ino:cr:pwm11')
+    for _ in ('rate', 'period', 'cmd'):
+        pvs.append('ino:cr:' + _)
+    for _ in pvs:
+        sys.argv.append(_)
+        sys.argv.append(_ + '.DESC')
     main()
 
 
