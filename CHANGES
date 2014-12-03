@@ -8,5 +8,6 @@ Refer to the TRAC site for details on the tickets noting *BcdaQWidgets* in the t
 Unreleased (development) Versions
 ----------------------------------
 
+:0.1.2: add RBV_BcdaQLabel widget for motors
 :0.1.1: handle color of alarm severity for CALC_INVALID
 :0.1:   initial trial
