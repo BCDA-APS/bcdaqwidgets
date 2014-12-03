@@ -1,14 +1,14 @@
-import datetime
 import bcdaqwidgets
 
 
-StyleSheet	     = bcdaqwidgets.StyleSheet
+StyleSheet           = bcdaqwidgets.StyleSheet
 BcdaQSignalDef	     = bcdaqwidgets.BcdaQSignalDef
-BcdaQLabel	     = bcdaqwidgets.BcdaQLabel
+BcdaQLabel           = bcdaqwidgets.BcdaQLabel
 BcdaQLineEdit	     = bcdaqwidgets.BcdaQLineEdit
 BcdaQPushButton      = bcdaqwidgets.BcdaQPushButton
 BcdaQMomentaryButton = bcdaqwidgets.BcdaQMomentaryButton
 BcdaQToggleButton    = bcdaqwidgets.BcdaQToggleButton
+RBV_BcdaQLabel       = bcdaqwidgets.RBV_BcdaQLabel
 
 
 __project__     = u'BcdaQWidgets'
@@ -23,13 +23,12 @@ __license__     += u" (see LICENSE file for details)"
 
 __long_description__ = __description__
 
-__yyyymmdd__      = str(datetime.datetime.now()).split()[0]
 __version__       = u"0.1.2"
 __minor_version__ = u""
 __svnid__         = u"$Id$"
 __revision__       = __svnid__.split(" ")[2]
 #__full_version__ = u"%s.%s-r%s" % (__version__, __minor_version__, __revision__) 
-__full_version__  = u"v%s.%s, %s" % (__version__, __minor_version__, __yyyymmdd__) 
+__full_version__  = u"v%s.%s" % (__version__, __minor_version__) 
 __all__ = ['bcdaqwidgets', ]
 
 
