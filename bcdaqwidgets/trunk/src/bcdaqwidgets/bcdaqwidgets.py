@@ -14,17 +14,18 @@ PySide-based EPICS-aware widgets for Python
 Copyright (c) 2009 - 2013, UChicago Argonne, LLC.
 See LICENSE file for details.
 
-The bcdaqwidgets [#]_ module provides a set of PySide (also Qt4)
+The bcdaqwidgets [#]_ module provides a set of PySide (also PyQt4)
 widgets that are EPICS-aware.  These include:
 
 =============================  ================================================================
 widget                         description
 =============================  ================================================================
-:func:`BcdaQLabel`             EPICS-aware QLabel widget
-:func:`BcdaQLineEdit`          EPICS-aware QLineEdit widget
-:func:`BcdaQPushButton`        EPICS-aware QPushButton widget
-:func:`BcdaQMomentaryButton`   sends a value when pressed or released, label does not change
-:func:`BcdaQToggleButton`      toggles boolean PV when pressed
+:class:`BcdaQLabel`            EPICS-aware QLabel widget
+:class:`BcdaQLineEdit`         EPICS-aware QLineEdit widget
+:class:`BcdaQPushButton`       EPICS-aware QPushButton widget
+:class:`BcdaQMomentaryButton`  sends a value when pressed or released, label does not change
+:class:`BcdaQToggleButton`     toggles boolean PV when pressed
+:class:`RBV_BcdaQLabel`        makes motor RBV field background green when motor is moving
 =============================  ================================================================
 
 .. [#] BCDA: Beam line Controls and Data Acquisition group 
@@ -75,6 +76,13 @@ SeverityColor.MINOR =        "#ff0000"      # dark orange since yellow looks bad
 SeverityColor.MAJOR =        "red"          # red
 SeverityColor.CALC_INVALID = "pink"         # pink
 
+BACKGROUND_DEFAULT = '#efefef'
+BACKGROUND_DONE_MOVING = BACKGROUND_DEFAULT
+BACKGROUND_MOVING = 'lightgreen'
+DMOV_COLOR_TABLE = {1: BACKGROUND_DONE_MOVING, 0: BACKGROUND_MOVING}
+
+BLANKS = ' '*4
+
 
 class StyleSheet(object):
     '''
@@ -110,7 +118,8 @@ class StyleSheet(object):
     def updateStyleSheet(self, sty={}):
         '''change specified styles and apply all to widget'''
         self._updateCache(sty)
-        self.widget.setStyleSheet(str(self))
+        if self.widget is not None:
+            self.widget.setStyleSheet(str(self))
 
     def _updateCache(self, sty={}):
         '''update internal cache with specified styles'''
@@ -136,7 +145,8 @@ class BcdaQSignalDef(QtCore.QObject):
 
     newFgColor = pyqtSignal()
     newBgColor = pyqtSignal()
-    newText    = pyqtSignal()
+    newText    = pyqtSignal(str)
+    dmov       = pyqtSignal(int)
 
 
 class BcdaQWidgetSuper(object):
@@ -144,7 +154,6 @@ class BcdaQWidgetSuper(object):
 
     def __init__(self, pvname=None, useAlarmState=False):
         self.style_dict = {}
-        self.text_cache = ' ' * 4
         self.pv = None                           # PyEpics PV object
         self.ca_callback = None
         self.ca_connect_callback = None
@@ -187,19 +196,13 @@ class BcdaQWidgetSuper(object):
             self.ca_callback = None
             self.ca_connect_callback = None
             self.state = AllowedStates.DISCONNECTED
-            self.text_cache = ' ' * 4
-            self.SetText()
+            self.SetText(BLANKS)
             self.SetBackgroundColor()
             self.setToolTip(pvname + ' not connected')
 
     def onPVConnect(self, pvname='', **kw):
         '''respond to a PyEpics CA connection event'''
         conn = kw['conn']
-        self.text_cache = {      # adjust the text
-                          False: '',    #'disconnected',
-                          True:  'connected',
-                      }[conn]
-        self.labelSignal.newText.emit()      # threadsafe update of the widget
         self.state = {      # adjust the state
                           False: AllowedStates.DISCONNECTED,
                           True:  AllowedStates.CONNECTED,
@@ -211,16 +214,15 @@ class BcdaQWidgetSuper(object):
 
     def onPVChange(self, pvname=None, char_value=None, **kw):
         '''respond to a PyEpics camonitor() event'''
-        self.text_cache = char_value         # cache the new text locally
-        self.labelSignal.newText.emit()      # threadsafe update of the widget
+        self.labelSignal.newText.emit(char_value)      # threadsafe update of the widget
         if self.ca_callback is not None:
             # caller wants to be notified of this camonitor event
             self.ca_callback(pvname=pvname, char_value=char_value, **kw)
 
-    def SetText(self, *args, **kw):
+    def SetText(self, text, *args, **kw):
         '''set the text of the widget (threadsafe update)'''
         # pull the new text from the cache (set by onPVChange() method)
-        self.setText(self.text_cache)
+        self.setText(text)
 
         # if desired, color the text based on the alarm severity
         if self.useAlarmState and self.pv is not None:
@@ -256,22 +258,23 @@ class BcdaQLabel(QtGui.QLabel, BcdaQWidgetSuper):
     :param str bgColorPv: update widget's background color based on this pv's value
     
     '''
+    css = {
+           'background-color': 'bisque', 
+           'border': '1px solid gray', 
+           'font': 'bold', 
+           }
 
     def __init__(self, pvname=None, useAlarmState=False, bgColorPv=None):
         ''':param str text: initial Label text (really, we can ignore this)'''
         BcdaQWidgetSuper.__init__(self, useAlarmState=useAlarmState)
-        QtGui.QLabel.__init__(self, self.text_cache)
+        QtGui.QLabel.__init__(self, BLANKS)
 
         # define the signals we'll use in the camonitor handler to update the GUI
         self.labelSignal = BcdaQSignalDef()
         self.labelSignal.newBgColor.connect(self.SetBackgroundColor)
         self.labelSignal.newText.connect(self.SetText)
 
-        self.updateStyleSheet({
-                               'background-color': 'bisque', 
-                               'border': '1px solid gray', 
-                               'font': 'bold', 
-                               })
+        self.updateStyleSheet(self.css)
 
         self.clut = dict(CLUT)
         self.pv = None
@@ -330,11 +333,15 @@ class BcdaQLineEdit(QtGui.QLineEdit, BcdaQWidgetSuper):
         widget.ca_connect("example:m1.VAL")
 
     '''
+    css = {
+           'background-color': 'bisque', 
+           'border': '3px inset gray', 
+           }
 
     def __init__(self, pvname=None, useAlarmState=False):
         ''':param str text: initial Label text (really, we can ignore this)'''
         BcdaQWidgetSuper.__init__(self)
-        QtGui.QLineEdit.__init__(self, self.text_cache)
+        QtGui.QLineEdit.__init__(self, BLANKS)
 
         # define the signals we'll use in the camonitor handler to update the GUI
         self.labelSignal.newBgColor.connect(self.SetBackgroundColor)
@@ -342,10 +349,7 @@ class BcdaQLineEdit(QtGui.QLineEdit, BcdaQWidgetSuper):
 
         self.clut = dict(CLUT)
         self.clut[AllowedStates.CONNECTED] = "bisque"
-        self.updateStyleSheet({
-                               'background-color': 'bisque', 
-                               'border': '3px inset gray', 
-                               })
+        self.updateStyleSheet(self.css)
 
         self.SetBackgroundColor()
         self.setAlignment(QtCore.Qt.AlignHCenter)
@@ -385,19 +389,19 @@ class BcdaQPushButton(QtGui.QPushButton, BcdaQWidgetSuper):
         widget.SetReleasedValue(1)
     
     '''
+    css = {'font': 'bold',}
 
     def __init__(self, label='', pvname=None):
         ''':param str text: initial Label text (really, we can ignore this)'''
         BcdaQWidgetSuper.__init__(self)
-        QtGui.QPushButton.__init__(self, self.text_cache)
-        self.setText(label)
+        QtGui.QPushButton.__init__(self, label)
 
         self.labelSignal = BcdaQSignalDef()
         self.labelSignal.newBgColor.connect(self.SetBackgroundColor)
         self.labelSignal.newText.connect(self.SetText)
 
         self.clut = dict(CLUT)
-        self.updateStyleSheet({'font': 'bold',})
+        self.updateStyleSheet(self.css)
 
         self.pv = None
         self.ca_callback = None
@@ -519,6 +523,41 @@ class BcdaQToggleButton(BcdaQPushButton):
         self.setText(self.value_names[self.pv.get()])
 
 
+class RBV_BcdaQLabel(BcdaQLabel):
+    '''
+    makes motor readback field (BcdaQLabel) background green when motor is moving
+    
+    EXAMPLE::
+
+        pvname = 'ioc:m1'
+        w = bcdaqwidgets.RBV_BcdaQLabel()
+        layout.addWidget(w)
+        w.ca_connect(pvname+'.RBV')
+
+    '''
+    
+    def __init__(self, *args):
+        super(RBV_BcdaQLabel, self).__init__(*args)
+        self.sty = StyleSheet(self)
+        self.signal = BcdaQSignalDef()
+        self.dmov = None
+    
+    def ca_connect(self, rbv_pv):
+        dmov_pv = rbv_pv.split('.')[0] + '.DMOV'
+        super(RBV_BcdaQLabel, self).ca_connect(rbv_pv)
+        self.dmov = epics.PV(dmov_pv, callback=self.dmov_callback)
+        self.signal.dmov.connect(self.setBackgroundColor)
+    
+    def dmov_callback(self, *args, **kw):
+        # called in PyEpics thread
+        self.signal.dmov.emit(kw['value'])
+    
+    def setBackgroundColor(self, value):
+        # called in GUI thread
+        color = DMOV_COLOR_TABLE[value]
+        self.sty.updateStyleSheet({'background-color': color})
+
+
 #------------------------------------------------------------------
 
 
@@ -530,38 +569,44 @@ class DemoView(QtGui.QWidget):
     This is a variation of EPICS PV Probe.
     '''
 
-    def __init__(self, parent=None, pvname=None, bgColorPvname=None):
+    def __init__(self, parent=None, pvname=None):
         QtGui.QWidget.__init__(self, parent)
-
-        layout = QtGui.QGridLayout()
-        layout.addWidget(QtGui.QLabel('BcdaQLabel'), 0, 0)
-        self.value = BcdaQLabel()
-        layout.addWidget(self.value, 0, 1)
-        self.setLayout(layout)
 
         self.sig = BcdaQSignalDef()
         self.sig.newBgColor.connect(self.SetBackgroundColor)
         self.toggle = False
 
+        layout = QtGui.QFormLayout()
+        self.setLayout(layout)
+
+        lbl  = QtGui.QLabel('PV')
+        wid = QtGui.QLabel(str(pvname))
+        layout.addRow(lbl, wid)
+
+        self.value = BcdaQLabel()
+        layout.addRow(QtGui.QLabel('BcdaQLabel'), self.value)
+
         self.setWindowTitle("Demo bcdaqwidgets module")
         if pvname is not None:
             self.ca_connect(pvname)
 
-            layout.addWidget(QtGui.QLabel('BcdaQLabel with alarm colors'), 1, 0)
-            layout.addWidget(BcdaQLabel(pvname=pvname, useAlarmState=True), 1, 1)
+            lbl = QtGui.QLabel('BcdaQLabel with alarm colors')
+            wid = BcdaQLabel(pvname=pvname, useAlarmState=True)
+            layout.addRow(lbl, wid)
 
-            pvnameBg = pvname.split('.')[0] + '.DMOV'
-            lblWidget = BcdaQLabel(pvname=pvname, bgColorPvname=pvnameBg)
-            layout.addWidget(QtGui.QLabel('BcdaQLabel with BG color change due to moving motor'), 2, 0)
-            layout.addWidget(lblWidget, 2, 1)
+            lbl = QtGui.QLabel('RBV_BcdaQLabel')
+            wid = RBV_BcdaQLabel()
+            wid.ca_connect(pvname+'.RBV')
+            layout.addRow(lbl, wid)
 
-            layout.addWidget(QtGui.QLabel('BcdaQLineEdit'), 3, 0)
-            layout.addWidget(BcdaQLineEdit(pvname=pvname), 3, 1)
+            lbl = QtGui.QLabel('BcdaQLineEdit')
+            wid = BcdaQLineEdit(pvname=pvname)
+            layout.addRow(lbl, wid)
 
             pvname = pvname.split('.')[0] + '.PROC'
-            widget = BcdaQMomentaryButton(label=pvname, pvname=pvname)
-            layout.addWidget(QtGui.QLabel('BcdaQMomentaryButton'), 4, 0)
-            layout.addWidget(widget, 4, 1)
+            lbl = QtGui.QLabel('BcdaQMomentaryButton')
+            wid = BcdaQMomentaryButton(label=pvname, pvname=pvname)
+            layout.addRow(lbl, wid)
 
     def ca_connect(self, pvname):
         self.value.ca_connect(pvname, ca_callback=self.callback)
@@ -591,7 +636,7 @@ def main():
                         action='store', 
                         nargs='?',
                         help="EPICS PV name", 
-                        default="prj:m1.RBV", 
+                        default="prj:m1", 
                         )
     results = parser.parse_args()
 

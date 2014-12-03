@@ -13,7 +13,7 @@ BcdaQToggleButton    = bcdaqwidgets.BcdaQToggleButton
 
 __project__     = u'BcdaQWidgets'
 __description__ = u"PyEpics-aware PySide widgets for the APS."
-__copyright__   = u'2009-2013, UChicago Argonne, LLC'
+__copyright__   = u'2009-2014, UChicago Argonne, LLC'
 __authors__     = [u'Pete Jemian', u'Cayla Suarez']
 __institution__ = u"Advanced Photon Source, Argonne National Laboratory"
 __author_email__= u"jemian@anl.gov"
@@ -24,7 +24,7 @@ __license__     += u" (see LICENSE file for details)"
 __long_description__ = __description__
 
 __yyyymmdd__      = str(datetime.datetime.now()).split()[0]
-__version__       = u"0.1.1"
+__version__       = u"0.1.2"
 __minor_version__ = u""
 __svnid__         = u"$Id$"
 __revision__       = __svnid__.split(" ")[2]
