@@ -23,7 +23,7 @@ __license__     += u" (see LICENSE file for details)"
 
 __long_description__ = __description__
 
-__version__       = u"0.1.2"
+__version__       = u"0.1.3"
 __minor_version__ = u""
 __svnid__         = u"$Id$"
 __revision__       = __svnid__.split(" ")[2]

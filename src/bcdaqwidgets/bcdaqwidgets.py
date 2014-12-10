@@ -266,8 +266,8 @@ class BcdaQLabel(QtGui.QLabel, BcdaQWidgetSuper):
 
     def __init__(self, pvname=None, useAlarmState=False, bgColorPv=None):
         ''':param str text: initial Label text (really, we can ignore this)'''
-        BcdaQWidgetSuper.__init__(self, useAlarmState=useAlarmState)
         QtGui.QLabel.__init__(self, BLANKS)
+        BcdaQWidgetSuper.__init__(self, useAlarmState=useAlarmState)
 
         # define the signals we'll use in the camonitor handler to update the GUI
         self.labelSignal = BcdaQSignalDef()
@@ -340,8 +340,8 @@ class BcdaQLineEdit(QtGui.QLineEdit, BcdaQWidgetSuper):
 
     def __init__(self, pvname=None, useAlarmState=False):
         ''':param str text: initial Label text (really, we can ignore this)'''
-        BcdaQWidgetSuper.__init__(self)
         QtGui.QLineEdit.__init__(self, BLANKS)
+        BcdaQWidgetSuper.__init__(self)
 
         # define the signals we'll use in the camonitor handler to update the GUI
         self.labelSignal.newBgColor.connect(self.SetBackgroundColor)
@@ -393,8 +393,8 @@ class BcdaQPushButton(QtGui.QPushButton, BcdaQWidgetSuper):
 
     def __init__(self, label='', pvname=None):
         ''':param str text: initial Label text (really, we can ignore this)'''
-        BcdaQWidgetSuper.__init__(self)
         QtGui.QPushButton.__init__(self, label)
+        BcdaQWidgetSuper.__init__(self)
 
         self.labelSignal = BcdaQSignalDef()
         self.labelSignal.newBgColor.connect(self.SetBackgroundColor)
@@ -444,7 +444,9 @@ class BcdaQPushButton(QtGui.QPushButton, BcdaQWidgetSuper):
 
 class BcdaQMomentaryButton(BcdaQPushButton):
     '''
-    Send a value when pressed or released, label does not change if PV changes.
+    Send a value when released, label does not change if PV changes.
+    
+    It only acts on mouse pressed signal.
     
     This is a special case of a BcdaQPushButton where the text on the button
     does not respond to changes of the value of the attached EPICS PV.
@@ -465,6 +467,16 @@ class BcdaQMomentaryButton(BcdaQPushButton):
 
     def SetText(self, *args, **kw):
         '''do not change the label from the EPICS PV'''
+        pass
+
+    def onPressed(self, **kw):
+        '''button was pressed, send preset value to EPICS'''
+        if self.pv is not None and self.pressed_value is not None:
+            self.pv.put(self.pressed_value)
+            self.setCheckable(False)
+
+    def onReleased(self, **kw):
+        '''ignore button release'''
         pass
 
 
@@ -492,7 +504,7 @@ class BcdaQToggleButton(BcdaQPushButton):
     '''
 
     def __init__(self, pvname=None):
-        BcdaQPushButton.__init__(self)
+        BcdaQPushButton.__init__(self, pvname=pvname)
         self.value_names = {1: 'change to 0', 0: 'change to 1'}
         self.setToolTip('tell EPICS PV to do this')
 
@@ -536,15 +548,16 @@ class RBV_BcdaQLabel(BcdaQLabel):
 
     '''
     
-    def __init__(self, *args):
-        super(RBV_BcdaQLabel, self).__init__(*args)
+    def __init__(self, *args, **kw):
+        BcdaQLabel.__init__(self, *args, **kw)
         self.sty = StyleSheet(self)
         self.signal = BcdaQSignalDef()
         self.dmov = None
     
     def ca_connect(self, rbv_pv):
-        dmov_pv = rbv_pv.split('.')[0] + '.DMOV'
+        #BcdaQLabel.ca_connect(rbv_pv)
         super(RBV_BcdaQLabel, self).ca_connect(rbv_pv)
+        dmov_pv = rbv_pv.split('.')[0] + '.DMOV'
         self.dmov = epics.PV(dmov_pv, callback=self.dmov_callback)
         self.signal.dmov.connect(self.setBackgroundColor)
     
@@ -603,9 +616,20 @@ class DemoView(QtGui.QWidget):
             wid = BcdaQLineEdit(pvname=pvname)
             layout.addRow(lbl, wid)
 
-            pvname = pvname.split('.')[0] + '.PROC'
+            lbl = QtGui.QLabel('BcdaQLineEdit')
+            wid = BcdaQLineEdit(pvname=pvname + '.TWV')
+            layout.addRow(lbl, wid)
+
+            pvname = pvname.split('.')[0] + '.TWF'
             lbl = QtGui.QLabel('BcdaQMomentaryButton')
-            wid = BcdaQMomentaryButton(label=pvname, pvname=pvname)
+            wid = BcdaQMomentaryButton(label='tweak +', pvname=pvname + '.TWF')
+            wid.SetPressedValue(1)
+            layout.addRow(lbl, wid)
+
+            pvname = pvname.split('.')[0] + '.TWR'
+            lbl = QtGui.QLabel('BcdaQMomentaryButton')
+            wid = BcdaQMomentaryButton(label='tweak -', pvname=pvname + '.TWR')
+            wid.SetPressedValue(1)
             layout.addRow(lbl, wid)
 
     def ca_connect(self, pvname):
