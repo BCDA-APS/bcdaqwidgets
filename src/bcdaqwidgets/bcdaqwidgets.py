@@ -9,7 +9,7 @@
 ########### SVN repository information ###################
 
 '''
-PySide-based EPICS-aware widgets for Python
+(PySide,PyQt4)-based EPICS-aware widgets for Python
 
 Copyright (c) 2009 - 2014, UChicago Argonne, LLC.
 See LICENSE file for details.
@@ -25,7 +25,7 @@ widget                         description
 :class:`BcdaQPushButton`       EPICS-aware QPushButton widget
 :class:`BcdaQMomentaryButton`  sends a value when pressed or released, label does not change
 :class:`BcdaQToggleButton`     toggles boolean PV when pressed
-:class:`RBV_BcdaQLabel`        makes motor RBV field background green when motor is moving
+:class:`BcdaQLabel_RBV`        makes motor RBV field background green when motor is moving
 =============================  ================================================================
 
 .. [#] BCDA: Beam line Controls and Data Acquisition group 
@@ -35,13 +35,14 @@ widget                         description
 '''
 
 
-import epics
-try:
+import sys
+if 'PySide' in sys.modules:
     from PySide import QtCore, QtGui
     pyqtSignal = QtCore.Signal
-except:
+elif 'PyQt4' in sys.modules:
     from PyQt4 import QtCore, QtGui
     pyqtSignal = QtCore.pyqtSignal
+import epics
 
 
 def typesafe_enum(*sequential, **named):
@@ -533,7 +534,7 @@ class BcdaQToggleButton(BcdaQPushButton):
         self.setText(self.value_names[self.pv.get()])
 
 
-class RBV_BcdaQLabel(BcdaQLabel):
+class BcdaQLabel_RBV(BcdaQLabel):
     '''
     makes motor readback field (BcdaQLabel) background green when motor is moving
     
@@ -569,104 +570,4 @@ class RBV_BcdaQLabel(BcdaQLabel):
         self.sty.updateStyleSheet({'background-color': color})
 
 
-#------------------------------------------------------------------
-
-
-class DemoView(QtGui.QWidget):
-    '''
-    Show the BcdaQWidgets using an EPICS PV connection.
-
-    Allow it to connect and ca_disconnect.
-    This is a variation of EPICS PV Probe.
-    '''
-
-    def __init__(self, parent=None, pvname=None):
-        QtGui.QWidget.__init__(self, parent)
-
-        self.sig = BcdaQSignalDef()
-        self.sig.newBgColor.connect(self.SetBackgroundColor)
-        self.toggle = False
-
-        layout = QtGui.QFormLayout()
-        self.setLayout(layout)
-
-        lbl  = QtGui.QLabel('PV')
-        wid = QtGui.QLabel(str(pvname))
-        layout.addRow(lbl, wid)
-
-        self.value = BcdaQLabel()
-        layout.addRow(QtGui.QLabel('BcdaQLabel'), self.value)
-
-        self.setWindowTitle("Demo bcdaqwidgets module")
-        if pvname is not None:
-            self.ca_connect(pvname)
-
-            lbl = QtGui.QLabel('BcdaQLabel with alarm colors')
-            wid = BcdaQLabel(pvname=pvname, useAlarmState=True)
-            layout.addRow(lbl, wid)
-
-            lbl = QtGui.QLabel('RBV_BcdaQLabel')
-            wid = RBV_BcdaQLabel()
-            wid.ca_connect(pvname+'.RBV')
-            layout.addRow(lbl, wid)
-
-            lbl = QtGui.QLabel('BcdaQLineEdit')
-            wid = BcdaQLineEdit(pvname=pvname)
-            layout.addRow(lbl, wid)
-
-            lbl = QtGui.QLabel('BcdaQLineEdit')
-            wid = BcdaQLineEdit(pvname=pvname + '.TWV')
-            layout.addRow(lbl, wid)
-
-            pvname = pvname.split('.')[0] + '.TWF'
-            lbl = QtGui.QLabel('BcdaQMomentaryButton')
-            wid = BcdaQMomentaryButton(label='tweak +', pvname=pvname + '.TWF')
-            wid.SetPressedValue(1)
-            layout.addRow(lbl, wid)
-
-            pvname = pvname.split('.')[0] + '.TWR'
-            lbl = QtGui.QLabel('BcdaQMomentaryButton')
-            wid = BcdaQMomentaryButton(label='tweak -', pvname=pvname + '.TWR')
-            wid.SetPressedValue(1)
-            layout.addRow(lbl, wid)
-
-    def ca_connect(self, pvname):
-        self.value.ca_connect(pvname, ca_callback=self.callback)
-
-    def callback(self, *args, **kw):
-        self.sig.newBgColor.emit()   # threadsafe update of the widget
-
-    def SetBackgroundColor(self, *args, **kw):
-        '''toggle the background color of self.value via its stylesheet'''
-        self.toggle = not self.toggle
-        color = {False: "#ccc333", True: "#cccccc",}[self.toggle]
-        self.value.updateStyleSheet({'background-color': color})
-
-
-#------------------------------------------------------------------
-
-
-def main():
-    '''command-line interface to test this GUI widget'''
-    import argparse
-    import sys
-    parser = argparse.ArgumentParser(description='Test the bcdaqwidgets module')
-
-    # positional arguments
-    # not required if GUI option is selected
-    parser.add_argument('test_PV', 
-                        action='store', 
-                        nargs='?',
-                        help="EPICS PV name", 
-                        default="prj:m1", 
-                        )
-    results = parser.parse_args()
-
-    app = QtGui.QApplication(sys.argv)
-    view = DemoView(pvname=results.test_PV)
-    view.show()
-    sys.exit(app.exec_())
-
-
-if __name__ == '__main__':
-    main()
+RBV_BcdaQLabel = BcdaQLabel_RBV    # legacy name
