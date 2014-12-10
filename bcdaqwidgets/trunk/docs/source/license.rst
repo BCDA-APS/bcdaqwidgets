@@ -1,7 +1,7 @@
 .. $Id$
 
 License
-==================================
+=======
 
-.. literalinclude:: ../../LICENSE
+.. literalinclude:: ../../src/bcdaqwidgets/LICENSE
    :language: text

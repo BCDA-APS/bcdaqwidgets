@@ -1,7 +1,7 @@
 .. $Id$
 
 README
-==================================
+======
 
-.. literalinclude:: ../../README
+.. literalinclude:: ../../README.rst
    :language: text
