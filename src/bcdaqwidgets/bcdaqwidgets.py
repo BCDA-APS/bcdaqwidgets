@@ -32,6 +32,7 @@ widget                         description
        of the Advanced Photon Source, Argonne National Laboratory,
        http://www.aps.anl.gov/bcda
 
+.. note:: bcdaqwidgets must be imported AFTER importing either PyQt4 or PySide
 '''
 
 
@@ -42,6 +43,8 @@ if 'PySide' in sys.modules:
 elif 'PyQt4' in sys.modules:
     from PyQt4 import QtCore, QtGui
     pyqtSignal = QtCore.pyqtSignal
+else:
+    raise RuntimeError('must import either PyQt4 or PySide BEFORE importing bcdaqwidgets')
 import epics
 
 
@@ -246,7 +249,7 @@ class BcdaQLabel(QtGui.QLabel, BcdaQWidgetSuper):
     
     USAGE::
     
-        from moxy.qtlib import bcdaqwidgets
+        import bcdaqwidgets
         
         ...
     
@@ -325,7 +328,7 @@ class BcdaQLineEdit(QtGui.QLineEdit, BcdaQWidgetSuper):
     
     USAGE::
     
-        from moxy.qtlib import bcdaqwidgets
+        import bcdaqwidgets
         
         ...
     
@@ -380,7 +383,7 @@ class BcdaQPushButton(QtGui.QPushButton, BcdaQWidgetSuper):
     
     USAGE::
     
-        from moxy.qtlib import bcdaqwidgets
+        import bcdaqwidgets
         
         ...
     
@@ -455,7 +458,7 @@ class BcdaQMomentaryButton(BcdaQPushButton):
     
     USAGE::
     
-        from moxy.qtlib import bcdaqwidgets
+        import bcdaqwidgets
         
         ...
     
@@ -493,7 +496,7 @@ class BcdaQToggleButton(BcdaQPushButton):
     
     USAGE::
     
-        from moxy.qtlib import bcdaqwidgets
+        import bcdaqwidgets
         
         ...
     

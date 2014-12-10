@@ -8,6 +8,7 @@ Refer to the TRAC site for details on the tickets noting *BcdaQWidgets* in the t
 Unreleased (development) Versions
 ----------------------------------
 
-:0.1.2: add RBV_BcdaQLabel widget for motors
+:0.1.4: revised PyQt import to pick what has already been imported
+:0.1.2: add BcdaQLabel_RBV widget for motors
 :0.1.1: handle color of alarm severity for CALC_INVALID
 :0.1:   initial trial
