@@ -11,7 +11,7 @@
 '''
 PySide-based EPICS-aware widgets for Python
 
-Copyright (c) 2009 - 2013, UChicago Argonne, LLC.
+Copyright (c) 2009 - 2014, UChicago Argonne, LLC.
 See LICENSE file for details.
 
 The bcdaqwidgets [#]_ module provides a set of PySide (also PyQt4)
@@ -37,11 +37,11 @@ widget                         description
 
 import epics
 try:
-    from PyQt4 import QtCore, QtGui
-    pyqtSignal = QtCore.pyqtSignal
-except:
     from PySide import QtCore, QtGui
     pyqtSignal = QtCore.Signal
+except:
+    from PyQt4 import QtCore, QtGui
+    pyqtSignal = QtCore.pyqtSignal
 
 
 def typesafe_enum(*sequential, **named):
