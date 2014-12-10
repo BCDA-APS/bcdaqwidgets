@@ -221,7 +221,6 @@ class BcdaQWidgetSuper(object):
 
     def SetText(self, text, *args, **kw):
         '''set the text of the widget (threadsafe update)'''
-        # pull the new text from the cache (set by onPVChange() method)
         self.setText(text)
 
         # if desired, color the text based on the alarm severity
@@ -531,7 +530,6 @@ class BcdaQToggleButton(BcdaQPushButton):
 
     def SetText(self, *args, **kw):
         '''set the text of the widget (threadsafe update) from the EPICS PV'''
-        # pull the new text from the cache (set by onPVChange() method)
         self.setText(self.value_names[self.pv.get()])
 
 
