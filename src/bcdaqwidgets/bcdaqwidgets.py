@@ -1,13 +1,5 @@
 #!/usr/bin/env python
 
-########### SVN repository information ###################
-# $Date$
-# $Author$
-# $Revision$
-# $URL$
-# $Id$
-########### SVN repository information ###################
-
 '''
 (PySide,PyQt4)-based EPICS-aware widgets for Python
 
@@ -44,7 +36,14 @@ elif 'PyQt4' in sys.modules:
     from PyQt4 import QtCore, QtGui
     pyqtSignal = QtCore.pyqtSignal
 else:
-    raise RuntimeError('must import either PyQt4 or PySide BEFORE importing bcdaqwidgets')
+    #raise RuntimeError('must import either PyQt4 or PySide BEFORE importing bcdaqwidgets')
+    # instead: this makes the documentation build properly
+    try:
+        from PySide import QtCore, QtGui
+        pyqtSignal = QtCore.Signal
+    except:
+        from PyQt4 import QtCore, QtGui
+        pyqtSignal = QtCore.pyqtSignal
 import epics
 
 
@@ -574,3 +573,13 @@ class BcdaQLabel_RBV(BcdaQLabel):
 
 
 RBV_BcdaQLabel = BcdaQLabel_RBV    # legacy name
+
+
+########### SVN repository information ###################
+# $Date$
+# $Author$
+# $Revision$
+# $URL$
+# $Id$
+########### SVN repository information ###################
+

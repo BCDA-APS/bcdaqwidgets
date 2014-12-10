@@ -1,4 +1,3 @@
-include README
-include LICENSE
+include README.rst
+include src/bcdaqwidgets/LICENSE
 include CHANGES*
-include ez_setup.py

@@ -1,8 +1,33 @@
 #!/usr/bin/env python
 
-'''
-Python project installation setup for BcdaQWidgets
-'''
+'''packaging for BcdaQWidgets'''
+
+from setuptools import setup, find_packages
+import os
+import sys
+
+sys.path.insert(0, os.path.join('src', ))
+import bcdaqwidgets
+
+setup(
+    author           = bcdaqwidgets.__author__,
+    author_email     = bcdaqwidgets.__author_email__,
+    classifiers      = bcdaqwidgets.__classifiers__,
+    description      = bcdaqwidgets.__description__,
+    entry_points     = bcdaqwidgets.__entry_points__,
+    license          = bcdaqwidgets.__license__,
+    long_description = bcdaqwidgets.__long_description__,
+    install_requires = bcdaqwidgets.__install_requires__,
+    name             = bcdaqwidgets.__project__,
+    platforms        = bcdaqwidgets.__platforms__,
+    packages         = bcdaqwidgets.__packages__.keys(),
+    package_dir      = bcdaqwidgets.__packages__,
+    package_data     = bcdaqwidgets.__package_data__,
+    url              = bcdaqwidgets.__url__,
+    version          = bcdaqwidgets.__version__,
+    zip_safe         = bcdaqwidgets.__zip_safe__,
+ )
+
 
 ########### SVN repository information ###################
 # $Date$
@@ -11,61 +36,3 @@ Python project installation setup for BcdaQWidgets
 # $URL$
 # $Id$
 ########### SVN repository information ###################
-
-
-#from distutils.core import setup
-from ez_setup import use_setuptools
-use_setuptools()
-from setuptools import setup, find_packages
-
-import os, sys
-
-sys.path.insert(0, os.path.join('src', ))
-import bcdaqwidgets
-
-requires = ['Sphinx>=0.6']
-
-packages = {}
-for pkg in ('bcdaqwidgets', 'bcdaqwidgets_demos', 'motorqt_demo'):
-    packages[pkg]       = os.path.join('src', pkg)
-
-console_scripts = []
-for launcher, method_path in {
-    'pvview': 'bcdaqwidgets.pvview:main',
-    #'pyside_probe': 'bcdaqwidgets_demos.pyside_probe:main',
-    'motor_qt': 'motorqt_demo.motor_qt:main',
-    'multimotor': 'motorqt_demo.multimotor:main',
-                 }.items():
-    console_scripts.append(launcher + ' = ' + method_path)
-
-setup(
-        name=bcdaqwidgets.__project__,
-        version=bcdaqwidgets.__version__,
-        description=bcdaqwidgets.__description__,
-        long_description = bcdaqwidgets.__long_description__,
-        author=', '.join(bcdaqwidgets.__authors__),
-        author_email=bcdaqwidgets.__author_email__,
-        url=bcdaqwidgets.__url__,
-        packages=packages.keys(),
-        license = bcdaqwidgets.__license__,
-        package_dir=packages,
-        platforms='any',
-        zip_safe=False,
-        classifiers=[
-            'Development Status :: 4 - Beta',
-            'Environment :: Console',
-            'Environment :: Web Environment',
-            'Intended Audience :: Science/Research',
-            'License :: Free To Use But Restricted',
-            'Operating System :: OS Independent',
-            'Programming Language :: Python',
-            'Topic :: Scientific/Engineering',
-            'Topic :: Software Development :: Embedded Systems',
-            'Topic :: Software Development :: Libraries :: Python Modules',
-            'Topic :: Utilities',
-        ],
-      entry_points={
-          # create & install console_scripts in <python>/bin
-          'console_scripts': console_scripts,
-      },
-     )
