@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 '''
-(PySide,PyQt4)-based EPICS-aware widgets for Python
+BcdaQWidgets: PyEpics-aware PyQt widgets for the APS
 
 Copyright (c) 2009 - 2014, UChicago Argonne, LLC.
 See LICENSE file for details.
@@ -36,7 +36,7 @@ elif 'PyQt4' in sys.modules:
     from PyQt4 import QtCore, QtGui
     pyqtSignal = QtCore.pyqtSignal
 elif 'sphinx' in sys.modules:
-    # makes the documentation build properly
+    # helps the documentation build properly
     try:
         from PySide import QtCore, QtGui
         pyqtSignal = QtCore.Signal

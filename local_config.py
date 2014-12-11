@@ -1,13 +1,13 @@
 import os
 
 __project__     = u'BcdaQWidgets'
-__description__ = u"PyEpics-aware PySide widgets for the APS."
+__description__ = u"PyEpics-aware PyQt widgets for the APS."
 __copyright__   = u'2009-2014, UChicago Argonne, LLC'
 __authors__     = [u'Pete Jemian', u'Cayla Suarez']
 __author__      = ', '.join(__authors__)
 __institution__ = u"Advanced Photon Source, Argonne National Laboratory"
 __author_email__= u"jemian@anl.gov"
-__url__         = u"will be but not yet: http://subversion.xray.aps.anl.gov/admin_bcdaext/BcdaQWidgets"
+__url__         = u"http://bcdaqwidgets.readthedocs.org"
 __license__     = u"(c) " + __copyright__
 __license__     += u" (see LICENSE file for details)"
 

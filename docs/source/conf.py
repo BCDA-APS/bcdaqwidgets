@@ -64,6 +64,7 @@ extensions.append('sphinx.ext.doctest')
 extensions.append('sphinx.ext.todo')
 extensions.append('sphinx.ext.coverage')
 extensions.append('sphinx.ext.viewcode')
+#extensions.append( 'matplotlib.sphinxext.mathmpl' )
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -131,6 +132,7 @@ pygments_style = 'sphinx'
 # a list of builtin themes.
 html_theme = 'default'
 html_theme = 'sphinxdoc'
+#html_theme = 'agogo'
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
