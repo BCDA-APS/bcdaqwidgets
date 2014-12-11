@@ -1,3 +1,4 @@
 include README.rst
 include src/bcdaqwidgets/LICENSE
+include src/bcdaqwidgets/VERSION
 include CHANGES*

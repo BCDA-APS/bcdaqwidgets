@@ -7,25 +7,25 @@ import os
 import sys
 
 sys.path.insert(0, os.path.join('src', ))
-import bcdaqwidgets
+import local_config
 
 setup(
-    author           = bcdaqwidgets.__author__,
-    author_email     = bcdaqwidgets.__author_email__,
-    classifiers      = bcdaqwidgets.__classifiers__,
-    description      = bcdaqwidgets.__description__,
-    entry_points     = bcdaqwidgets.__entry_points__,
-    license          = bcdaqwidgets.__license__,
-    long_description = bcdaqwidgets.__long_description__,
-    install_requires = bcdaqwidgets.__install_requires__,
-    name             = bcdaqwidgets.__project__,
-    platforms        = bcdaqwidgets.__platforms__,
-    packages         = bcdaqwidgets.__packages__.keys(),
-    package_dir      = bcdaqwidgets.__packages__,
-    package_data     = bcdaqwidgets.__package_data__,
-    url              = bcdaqwidgets.__url__,
-    version          = bcdaqwidgets.__version__,
-    zip_safe         = bcdaqwidgets.__zip_safe__,
+    author           = local_config.__author__,
+    author_email     = local_config.__author_email__,
+    classifiers      = local_config.__classifiers__,
+    description      = local_config.__description__,
+    entry_points     = local_config.__entry_points__,
+    license          = local_config.__license__,
+    long_description = local_config.__long_description__,
+    install_requires = local_config.__install_requires__,
+    name             = local_config.__project__,
+    platforms        = local_config.__platforms__,
+    packages         = local_config.__packages__.keys(),
+    package_dir      = local_config.__packages__,
+    package_data     = local_config.__package_data__,
+    url              = local_config.__url__,
+    version          = local_config.__version__,
+    zip_safe         = local_config.__zip_safe__,
  )
 
 
