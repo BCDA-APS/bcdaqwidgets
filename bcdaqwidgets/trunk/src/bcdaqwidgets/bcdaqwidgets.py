@@ -35,15 +35,16 @@ if 'PySide' in sys.modules:
 elif 'PyQt4' in sys.modules:
     from PyQt4 import QtCore, QtGui
     pyqtSignal = QtCore.pyqtSignal
-else:
-    #raise RuntimeError('must import either PyQt4 or PySide BEFORE importing bcdaqwidgets')
-    # instead: this makes the documentation build properly
+elif 'sphinx' in sys.modules:
+    # makes the documentation build properly
     try:
         from PySide import QtCore, QtGui
         pyqtSignal = QtCore.Signal
     except:
         from PyQt4 import QtCore, QtGui
         pyqtSignal = QtCore.pyqtSignal
+else:
+    raise RuntimeError('must import either PyQt4 or PySide BEFORE importing bcdaqwidgets')
 import epics
 
 

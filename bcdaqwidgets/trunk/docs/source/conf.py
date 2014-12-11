@@ -18,7 +18,8 @@ import sys, os
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #sys.path.insert(0, os.path.abspath('.'))
 sys.path.insert(0, os.path.abspath(os.path.join('..', '..', 'src')))
-import bcdaqwidgets
+import imp
+local_config = imp.load_source('local_config', '../../local_config.py')
 
 ### -- ReadTheDocs configuration -----------------------------------------------------
 # https://docs.readthedocs.org/en/latest/faq.html#my-project-isn-t-building-with-autodoc
@@ -44,7 +45,7 @@ class Mock(object):
         else:
             return Mock()
 
-MOCK_MODULES = bcdaqwidgets.__install_requires__
+MOCK_MODULES = local_config.__install_requires__
 MOCK_MODULES.append('epics')
 
 for mod_name in MOCK_MODULES:
@@ -77,15 +78,15 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = bcdaqwidgets.__project__
-copyright = bcdaqwidgets.__copyright__
+project = local_config.__project__
+copyright = local_config.__copyright__
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
 # built documents.
 #
 # The short X.Y version.
-version = bcdaqwidgets.__version__
+version = local_config.__version__
 # The full version, including alpha/beta/rc tags.
 release = version
 
@@ -222,9 +223,9 @@ latex_elements = {
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
   ('index', 
-   '%s.tex' % bcdaqwidgets.__project__, 
-   u'%s Documentation' % bcdaqwidgets.__project__,
-   ', '.join(bcdaqwidgets.__authors__), 
+   '%s.tex' % local_config.__project__, 
+   u'%s Documentation' % local_config.__project__,
+   ', '.join(local_config.__authors__), 
    'manual'),
 ]
 
@@ -255,9 +256,9 @@ latex_documents = [
 # (source start file, name, description, authors, manual section).
 man_pages = [
     ('index', 
-     bcdaqwidgets.__project__.lower(), 
-     u'%s Documentation' % bcdaqwidgets.__project__,
-     bcdaqwidgets.__authors__, 1)
+     local_config.__project__.lower(), 
+     u'%s Documentation' % local_config.__project__,
+     local_config.__authors__, 1)
 ]
 
 # If true, show URL addresses after external links.
@@ -271,11 +272,11 @@ man_pages = [
 #  dir menu entry, description, category)
 texinfo_documents = [
   ('index', 
-   bcdaqwidgets.__project__, 
-   u'%s Documentation' % bcdaqwidgets.__project__,
-   ', '.join(bcdaqwidgets.__authors__), 
-   bcdaqwidgets.__project__, 
-   bcdaqwidgets.__description__,
+   local_config.__project__, 
+   u'%s Documentation' % local_config.__project__,
+   ', '.join(local_config.__authors__), 
+   local_config.__project__, 
+   local_config.__description__,
    'Miscellaneous'),
 ]
 
