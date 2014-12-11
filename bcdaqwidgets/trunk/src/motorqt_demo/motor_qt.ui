@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Dialog</class>
+ <widget class="QDialog" name="Dialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>251</width>
+    <height>174</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <widget class="QLabel" name="DESC">
+       <property name="toolTip">
+        <string>DESC: short description</string>
+       </property>
+       <property name="whatsThis">
+        <string>DESC: short description</string>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">qproperty-alignment: AlignCenter;
+color: white; 
+background-color: blue;
+font: bold;
+</string>
+       </property>
+       <property name="text">
+        <string>TextLabel</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="NAME">
+       <property name="toolTip">
+        <string>NAME: EPICS PV name</string>
+       </property>
+       <property name="whatsThis">
+        <string>NAME: EPICS PV name</string>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">qproperty-alignment: AlignCenter;
+color: darkblue; 
+background-color: lightgray;
+font: bold;
+</string>
+       </property>
+       <property name="text">
+        <string>TextLabel</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="EGU">
+       <property name="toolTip">
+        <string>EGU: engineering units</string>
+       </property>
+       <property name="whatsThis">
+        <string>EGU: engineering units</string>
+       </property>
+       <property name="text">
+        <string>TextLabel</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="RBV">
+       <property name="toolTip">
+        <string>RBV: motor readback value</string>
+       </property>
+       <property name="whatsThis">
+        <string>RBV: motor readback value</string>
+       </property>
+       <property name="text">
+        <string>TextLabel</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="VAL">
+       <property name="toolTip">
+        <string>VAL: motor target value</string>
+       </property>
+       <property name="whatsThis">
+        <string>VAL: motor target value</string>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: beige;</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="tweakLayout" stretch="0,0,0,1,0,0,0">
+       <item>
+        <widget class="QLabel" name="LLS">
+         <property name="toolTip">
+          <string>LLS: low limit switch indicator</string>
+         </property>
+         <property name="whatsThis">
+          <string>LLS: low limit switch indicator</string>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">width: 6px;
+min-width: 6px;
+max-width: 6px;
+</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="TWR">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="toolTip">
+          <string>TWR: decrement motor by tweak value</string>
+         </property>
+         <property name="whatsThis">
+          <string>TWR: decrement motor by tweak value</string>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">width: 20px;
+min-width: 20px;
+max-width: 20px;
+</string>
+         </property>
+         <property name="text">
+          <string>&lt;</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="divide">
+         <property name="toolTip">
+          <string>divide tweak value by 10</string>
+         </property>
+         <property name="whatsThis">
+          <string>divide tweak value by 10</string>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">width: 20px;
+min-width: 20px;
+max-width: 20px;
+</string>
+         </property>
+         <property name="text">
+          <string>/</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="TWV">
+         <property name="toolTip">
+          <string>TWV: tweak value</string>
+         </property>
+         <property name="whatsThis">
+          <string>TWV: tweak value</string>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">background-color: lightgray;</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="multiply">
+         <property name="toolTip">
+          <string>multiply tweak value by 10</string>
+         </property>
+         <property name="whatsThis">
+          <string>multiply tweak value by 10</string>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">width: 20px;
+min-width: 20px;
+max-width: 20px;
+</string>
+         </property>
+         <property name="text">
+          <string>*</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="TWF">
+         <property name="toolTip">
+          <string>TWF: increment motor by tweak value</string>
+         </property>
+         <property name="whatsThis">
+          <string>TWF: increment motor by tweak value</string>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">width: 20px;
+min-width: 20px;
+max-width: 20px;
+</string>
+         </property>
+         <property name="text">
+          <string>&gt;</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="HLS">
+         <property name="toolTip">
+          <string>HLS: high limit switch indicator</string>
+         </property>
+         <property name="whatsThis">
+          <string>HLS: high limit switch indicator</string>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">width: 6px;
+min-width: 6px;
+max-width: 6px;
+</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <widget class="QPushButton" name="STOP">
+       <property name="toolTip">
+        <string>STOP: command this motor to stop moving</string>
+       </property>
+       <property name="whatsThis">
+        <string>STOP: command this motor to stop moving</string>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton { 
+    background-color: red;
+    color: black;
+    font: bold;
+    text-align: center;
+}
+QPushButton:hover { 
+    background-color: red;
+    color: yellow;
+    font: bold;
+    text-align: center;
+}
+</string>
+       </property>
+       <property name="text">
+        <string>STOP</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
