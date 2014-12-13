@@ -155,6 +155,7 @@ class BcdaQSignalDef(QtCore.QObject):
 
 class BcdaQWidgetSuper(object):
     '''superclass for EPICS-aware widgets'''
+    css = {}
 
     def __init__(self, pvname=None, useAlarmState=False):
         self.style_dict = {}
@@ -170,6 +171,7 @@ class BcdaQWidgetSuper(object):
 
         # for internal use persisting the various styleSheet settings
         self._style_sheet = StyleSheet(self)
+        self.updateStyleSheet(self.css)
 
     def ca_connect(self, pvname, ca_callback=None, ca_connect_callback=None):
         '''
@@ -394,7 +396,7 @@ class BcdaQPushButton(QtGui.QPushButton, BcdaQWidgetSuper):
     '''
     css = {'font': 'bold',}
 
-    def __init__(self, label='', pvname=None):
+    def __init__(self, label='', pvname=None, pressed_value=None, released_value=None):
         ''':param str text: initial Label text (really, we can ignore this)'''
         QtGui.QPushButton.__init__(self, label)
         BcdaQWidgetSuper.__init__(self)
@@ -415,8 +417,8 @@ class BcdaQPushButton(QtGui.QPushButton, BcdaQWidgetSuper):
         self.clicked[bool].connect(self.onPressed)
         self.released.connect(self.onReleased)
 
-        self.pressed_value = None
-        self.released_value = None
+        self.pressed_value = pressed_value
+        self.released_value = released_value
 
         if pvname is not None and isinstance(pvname, str):
             self.ca_connect(pvname)
@@ -464,13 +466,13 @@ class BcdaQMomentaryButton(BcdaQPushButton):
     
         widget = bcdaqwidgets.BcdaQMomentaryButton('Stop')
         widget.ca_connect("example:m1.STOP")
-        widget.SetReleasedValue(1)
+        widget.SetPressedValue(1)
 
     '''
 
-    def SetText(self, *args, **kw):
-        '''do not change the label from the EPICS PV'''
-        pass
+    # disable these methods
+    def SetText(self, *args, **kw): pass
+    def onReleased(self, **kw): pass
 
     def onPressed(self, **kw):
         '''button was pressed, send preset value to EPICS'''
@@ -478,9 +480,6 @@ class BcdaQMomentaryButton(BcdaQPushButton):
             self.pv.put(self.pressed_value)
             self.setCheckable(False)
 
-    def onReleased(self, **kw):
-        '''ignore button release'''
-        pass
 
 
 class BcdaQToggleButton(BcdaQPushButton):
@@ -564,11 +563,11 @@ class BcdaQLabel_RBV(BcdaQLabel):
         self.signal.dmov.connect(self.setBackgroundColor)
     
     def dmov_callback(self, *args, **kw):
-        # called in PyEpics thread
+        '''called in PyEpics thread'''
         self.signal.dmov.emit(kw['value'])
     
     def setBackgroundColor(self, value):
-        # called in GUI thread
+        '''called in GUI thread'''
         color = DMOV_COLOR_TABLE[value]
         self.sty.updateStyleSheet({'background-color': color})
 
