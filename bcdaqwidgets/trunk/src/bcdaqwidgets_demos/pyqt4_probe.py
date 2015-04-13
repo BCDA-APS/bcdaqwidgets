@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 '''
-PySide implementation of EPICS probe
+PyQt4 implementation of EPICS probe
 
 :author: Matt Newville, CARS, University of Chicago
 :note: Does not use bcdaqwidgets
@@ -10,7 +10,7 @@ PySide implementation of EPICS probe
 import epics
 import os
 import sys
-from PySide.QtGui import QWidget, QLabel, QLineEdit, QGridLayout, QApplication
+from PyQt4.QtGui import QWidget, QLabel, QLineEdit, QGridLayout, QApplication
 
 class PVProbe(QWidget):
     '''frame that monitors a user-entered EPICS PV'''
@@ -32,14 +32,14 @@ class PVProbe(QWidget):
         grid.addWidget(self.value,   1, 1)
 
         self.setLayout(grid)
-        self.setWindowTitle("PySide PV Probe:")
+        self.setWindowTitle("PyQt4 PV Probe:")
 
     def onPVNameReturn(self):
         '''responds when user enters a new PV'''
         if self.pv is not None:
             self.pv.remove_callback()
             self.pv.ca_disconnect()
-        self.pv = epics.PV(self.pvname.text(), callback=self.onPVChange)
+        self.pv = epics.PV(str(self.pvname.text()), callback=self.onPVChange)
 
     def onPVChange(self, pvname=None, char_value=None, **kws):
         '''updates the widget (not thread-safe)'''

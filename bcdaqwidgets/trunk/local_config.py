@@ -2,7 +2,7 @@ import os
 
 __project__     = u'BcdaQWidgets'
 __description__ = u"PyEpics-aware PyQt widgets for the APS."
-__copyright__   = u'2009-2014, UChicago Argonne, LLC'
+__copyright__   = u'2009-2015, UChicago Argonne, LLC'
 __authors__     = [u'Pete Jemian', u'Cayla Suarez']
 __author__      = ', '.join(__authors__)
 __institution__ = u"Advanced Photon Source, Argonne National Laboratory"

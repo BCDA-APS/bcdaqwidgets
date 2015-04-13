@@ -1,13 +1,11 @@
 import sys
-try:
-    from PyQt4 import QtCore, QtGui
-except ImportError:
-    from PySide import QtCore, QtGui
+from PyQt4 import QtCore, QtGui
 from main_ui import Ui_MainWindow
 import progress
 import random
 
 reload(progress)
+
 class MyForm(QtGui.QMainWindow):
   def __init__(self, parent=None):
     QtGui.QMainWindow.__init__(self, parent)

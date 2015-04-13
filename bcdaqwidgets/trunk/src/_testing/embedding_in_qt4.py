@@ -11,10 +11,10 @@
 
 from __future__ import unicode_literals
 import sys, os, random
-from PySide import QtGui, QtCore
+from PyQt4 import QtGui, QtCore
 
 import matplotlib
-matplotlib.rcParams['backend.qt4']='PySide'
+matplotlib.rcParams['backend.qt4']='PyQt4'
 
 from numpy import arange, sin, pi
 from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas

@@ -10,7 +10,7 @@
 MatplotlibWidget
 ================
 
-Modified example of matplotlib widget for PySide
+Modified example of matplotlib widget for PyQt4
 
 Copyright © 2009 Pierre Raybaut
 This software is licensed under the terms of the MIT License
@@ -21,11 +21,11 @@ Copyright © 2005 Florent Rougon, 2006 Darren Dale
 
 __version__ = "1.0.0"
 
-from PySide.QtGui import QSizePolicy
-from PySide.QtCore import QSize
+from PyQt4.QtGui import QSizePolicy
+from PyQt4.QtCore import QSize
 
 import matplotlib
-matplotlib.rcParams['backend.qt4']='PySide'
+matplotlib.rcParams['backend.qt4']='PyQt4'
 
 from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as Canvas
 from matplotlib.figure import Figure
@@ -36,7 +36,7 @@ rcParams['font.size'] = 9
 
 class MatplotlibWidget(Canvas):
     """
-    MatplotlibWidget inherits PySide.QtGui.QWidget
+    MatplotlibWidget inherits PyQt4.QtGui.QWidget
     and matplotlib.backend_bases.FigureCanvasBase
    
     Options: option_name (default_value)
@@ -116,7 +116,7 @@ class MatplotlibWidget(Canvas):
 #===============================================================================
 if __name__ == '__main__':
     import sys
-    from PySide.QtGui import QMainWindow, QApplication
+    from PyQt4.QtGui import QMainWindow, QApplication
     from numpy import linspace
    
     class ApplicationWindow(QMainWindow):

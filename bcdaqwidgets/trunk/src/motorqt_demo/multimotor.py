@@ -22,7 +22,7 @@ Show one or more EPICS motor panels in a Qt GUI QWidget
 
 
 import sys
-from PySide.QtGui import *      #@UnusedWildImport
+from PyQt4.QtGui import *      #@UnusedWildImport
 import motor_qt
 
 

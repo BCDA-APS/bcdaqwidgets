@@ -96,7 +96,7 @@ def main():
                         action='store', 
                         nargs='?',
                         help="EPICS PV name", 
-                        default="prj:m1", 
+                        default="xxx:m1", 
                         )
     results = parser.parse_args()
 

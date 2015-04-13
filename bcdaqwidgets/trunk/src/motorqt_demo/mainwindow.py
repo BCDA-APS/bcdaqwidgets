@@ -24,8 +24,8 @@ Provide EPICS motor controls for a beam line
 
 import os
 import sys
-from PySide.QtGui import *            #@UnusedWildImport
-from PySide.QtCore import *           #@UnusedWildImport
+from PyQt4.QtGui import *            #@UnusedWildImport
+from PyQt4.QtCore import *           #@UnusedWildImport
 import listpanel                      #@UnusedImport
 
 
@@ -97,10 +97,10 @@ class MainWindow(QMainWindow):
     
     def onOpenFile(self):
         '''Choose a file with motor PVs'''
-        fileName = QFileDialog().getOpenFileName(self)
+        fileName = str(QFileDialog().getOpenFileName(self))
         if len(fileName) > 0:
-            self.setStatus('selected file: ' + fileName[0])
-            self.loadFile(fileName[0])
+            self.setStatus('selected file: ' + fileName)
+            self.loadFile(fileName)
             self.dirty = False
     
     def loadFile(self, filename):
@@ -115,8 +115,6 @@ def main():
     '''demo: display a GUI with motor PVs'''
     qapp = QApplication(sys.argv)
     mainWin = MainWindow()
-    #for item in range(8):
-    #    mainWin.mlp.addMotorPV("syn:m%d" % (item+1))
     mainWin.show()
     sys.exit(qapp.exec_())
 

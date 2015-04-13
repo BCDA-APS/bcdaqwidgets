@@ -3,10 +3,10 @@
 '''
 BcdaQWidgets: PyEpics-aware PyQt widgets for the APS
 
-Copyright (c) 2009 - 2014, UChicago Argonne, LLC.
+Copyright (c) 2009 - 2015, UChicago Argonne, LLC.
 See LICENSE file for details.
 
-The bcdaqwidgets [#]_ module provides a set of PySide (also PyQt4)
+The bcdaqwidgets [#]_ module provides a set of PyQt4
 widgets that are EPICS-aware.  These include:
 
 =============================  ================================================================
@@ -24,27 +24,13 @@ widget                         description
        of the Advanced Photon Source, Argonne National Laboratory,
        http://www.aps.anl.gov/bcda
 
-.. note:: bcdaqwidgets must be imported AFTER importing either PyQt4 or PySide
+.. note:: bcdaqwidgets must be imported AFTER importing either PyQt4
 '''
 
 
 import sys
-if 'PySide' in sys.modules:
-    from PySide import QtCore, QtGui
-    pyqtSignal = QtCore.Signal
-elif 'PyQt4' in sys.modules:
-    from PyQt4 import QtCore, QtGui
-    pyqtSignal = QtCore.pyqtSignal
-elif 'sphinx' in sys.modules:
-    # helps the documentation build properly
-    try:
-        from PySide import QtCore, QtGui
-        pyqtSignal = QtCore.Signal
-    except:
-        from PyQt4 import QtCore, QtGui
-        pyqtSignal = QtCore.pyqtSignal
-else:
-    raise RuntimeError('must import either PyQt4 or PySide BEFORE importing bcdaqwidgets')
+from PyQt4 import QtCore, QtGui
+pyqtSignal = QtCore.pyqtSignal
 import epics
 
 
@@ -142,11 +128,8 @@ class StyleSheet(object):
 class BcdaQSignalDef(QtCore.QObject):
     '''
     Define the signals used to communicate between the PyEpics
-    thread and the PySide (main Qt4 GUI) thread.
+    thread and the PyQt4 (main Qt4 GUI) thread.
     '''
-    # see: http://www.pyside.org/docs/pyside/PySide/QtCore/Signal.html
-    # see: http://zetcode.com/gui/pysidetutorial/eventsandsignals/
-
     newFgColor = pyqtSignal()
     newBgColor = pyqtSignal()
     newText    = pyqtSignal(str)
@@ -247,7 +230,7 @@ class BcdaQWidgetSuper(object):
 
 class BcdaQLabel(QtGui.QLabel, BcdaQWidgetSuper):
     '''
-    Provide the value of an EPICS PV on a PySide.QtGui.QLabel
+    Provide the value of an EPICS PV on a PyQt4.QtGui.QLabel
     
     USAGE::
     
@@ -326,7 +309,7 @@ class BcdaQLabel(QtGui.QLabel, BcdaQWidgetSuper):
 
 class BcdaQLineEdit(QtGui.QLineEdit, BcdaQWidgetSuper):
     '''
-    Provide the value of an EPICS PV on a PySide.QtGui.QLineEdit
+    Provide the value of an EPICS PV on a PyQt4.QtGui.QLineEdit
     
     USAGE::
     

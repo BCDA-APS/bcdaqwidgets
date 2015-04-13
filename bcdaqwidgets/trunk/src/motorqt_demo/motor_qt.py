@@ -24,7 +24,7 @@ Show an EPICS motor in a Qt GUI QWidget
 
 import epics
 import sys
-from PySide.QtGui import *      #@UnusedWildImport
+from PyQt4.QtGui import *      #@UnusedWildImport
 
 
 BLANK = ' '*4
@@ -229,7 +229,7 @@ class MotorPanel(QFrame):
         self.motor_pv = pvname.split('.')[0]   # keep everything to left of first dot
         
         self.controls['NAME'].setText(self.motor_pv)
-        self.pv = epics.Motor(self.motor_pv)   # verifies that self.motor_pv has RTYP='motor'
+        self.pv = epics.Motor(str(self.motor_pv))   # verifies that self.motor_pv has RTYP='motor'
 
         callback_dict = {
             #field:  callback function
@@ -353,7 +353,7 @@ class MotorPanel(QFrame):
         '''change the background color of a Qt widget'''
         if widget is not None:
             palette = QPalette()
-            palette.setColor(widget.backgroundRole(), color)
+            palette.setColor(widget.backgroundRole(), QColor(color))
             widget.setPalette(palette)
 
 

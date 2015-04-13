@@ -1,7 +1,4 @@
-try:
-    from PyQt4 import QtCore, QtGui
-except ImportError:
-    from PySide import QtCore, QtGui
+from PyQt4 import QtCore, QtGui
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8

@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-ZetCode PySide tutorial 
+ZetCode PyQt4 tutorial 
 
 This example shows a tooltip on 
 a window and a button
@@ -13,7 +13,7 @@ last edited: August 2011
 """
 
 import sys
-from PySide import QtGui
+from PyQt4 import QtGui
 
 class Example(QtGui.QWidget):
     

@@ -4,13 +4,13 @@
 import sys
 import matplotlib
 matplotlib.use('Qt4Agg')
-matplotlib.rcParams['backend.qt4']='PySide'
+matplotlib.rcParams['backend.qt4']='PyQt4'
 import pylab
 
 from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
 
-from PySide import QtCore, QtGui
+from PyQt4 import QtCore, QtGui
 
 from MatplotlibWidget import MatplotlibWidget
 import epics
