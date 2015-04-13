@@ -1,8 +1,0 @@
-como:m1
-como:m2
-como:m3
-como:m4
-como:m5
-como:m6
-como:m7
-como:m8

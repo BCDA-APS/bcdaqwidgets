@@ -1,16 +1,15 @@
 #!/usr/bin/env python
 
-'''display one or more EPICS PVs in a PyQt4 GUI window as a table'''
+'''
+Windows starter program for EPICS Qt motor demo
+'''
 
-import os
 import sys
-import pvview
+import motor_qt
 
-sys.path.insert(0, os.path.abspath('..'))
-
-sys.argv.append( 'xxx:iso8601' )
-pvview.main()
-
+if __name__ == '__main__':
+    sys.argv.append('xxx:m1')
+    motor_qt.main()
 
 ########### SVN repository information ###################
 # $Date$

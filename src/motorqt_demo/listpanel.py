@@ -33,7 +33,7 @@ Future Features
 
 import motor_qt
 import sys
-from PySide.QtGui import *      #@UnusedWildImport
+from PyQt4.QtGui import *      #@UnusedWildImport
 
 
 class MotorListPanel(QFrame):
@@ -91,5 +91,5 @@ def main():
 
 if __name__ == '__main__':
     for m in range(8):
-        sys.argv.append('syn:m%d' % (m+1))
+        sys.argv.append('xxx:m%d' % (m+1))
     main()

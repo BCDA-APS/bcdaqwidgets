@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 
-'''display one or more EPICS PVs in a PySide GUI window as a table'''
+'''display one or more EPICS PVs in a PyQt4 GUI window as a table'''
 
 import os
 import sys
-from PySide.QtGui import QWidget, QLabel, QGridLayout, QApplication
+from PyQt4.QtGui import QWidget, QLabel, QGridLayout, QApplication
 
 sys.path.insert(0, os.path.abspath('..'))
 import bcdaqwidgets

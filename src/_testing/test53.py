@@ -14,7 +14,7 @@ Test code for TRAC ticket #53.
 
 
 import epics
-from PySide import QtGui, QtCore
+from PyQt4 import QtGui, QtCore
 import bcdaqwidgets
 import sys
 

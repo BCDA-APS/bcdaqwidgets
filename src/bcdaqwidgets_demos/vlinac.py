@@ -13,7 +13,7 @@ See LICENSE file for details.
 
 import os
 import sys
-from PySide import QtGui, QtCore
+from PyQt4 import QtGui, QtCore
 
 sys.path.insert(0, os.path.abspath('..'))
 import bcdaqwidgets

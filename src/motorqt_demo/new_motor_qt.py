@@ -15,7 +15,7 @@ Show an EPICS motor in a Qt GUI QWidget
 
 import epics
 import sys
-from PySide.QtGui import *      #@UnusedWildImport
+from PyQt4.QtGui import *      #@UnusedWildImport
 import bcdaqwidgets
 
 

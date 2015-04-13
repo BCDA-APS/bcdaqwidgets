@@ -1,8 +1,0 @@
-syn:m1
-syn:m2
-syn:m3
-syn:m4
-syn:m5
-syn:m6
-syn:m7
-syn:m8

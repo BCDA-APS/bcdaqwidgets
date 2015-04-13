@@ -13,5 +13,5 @@ available in Python 2.7.  Additionally, this program uses:
 
 .. index:: PySide
 
-*PySide* (Qt4 widget library) 
-	http://www.pyside.org/
+*PyQt4* (Qt4 widget library) 
+	http://http://www.riverbankcomputing.com/software/pyqt/intro/
