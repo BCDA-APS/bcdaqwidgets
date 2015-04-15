@@ -349,7 +349,7 @@ class BcdaQLineEdit(QtGui.QLineEdit, BcdaQWidgetSuper):
     def onReturnPressed(self):
         '''send the widget's text to the EPICS PV'''
         if self.pv is not None and len(self.text()) > 0:
-            self.pv.put(self.text())
+            self.pv.put(str(self.text()))
 
     def SetBackgroundColor(self, *args, **kw):
         '''set the background color of the QLineEdit() via its QPalette'''
