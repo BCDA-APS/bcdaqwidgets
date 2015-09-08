@@ -10,11 +10,3 @@ import motor_qt
 if __name__ == '__main__':
     sys.argv.append('xxx:m1')
     motor_qt.main()
-
-########### SVN repository information ###################
-# $Date$
-# $Author$
-# $Revision$
-# $URL$
-# $Id$
-########### SVN repository information ###################

@@ -11,14 +11,6 @@ Show an EPICS motor in a Qt GUI QWidget
 '''
 
 
-########### SVN repository information ###################
-# $Date$
-# $Author$
-# $Revision$
-# $URL$
-# $Id$
-########### SVN repository information ###################
-
 # TODO: show LVIO somehow, perhaps setting VAL.background = yellow?
 
 

@@ -22,15 +22,6 @@ Future Features
 '''
 
 
-########### SVN repository information ###################
-# $Date$
-# $Author$
-# $Revision$
-# $URL$
-# $Id$
-########### SVN repository information ###################
-
-
 import motor_qt
 import sys
 from PyQt4.QtGui import *      #@UnusedWildImport

@@ -13,15 +13,6 @@ Provide EPICS motor controls for a beam line
 '''
 
 
-########### SVN repository information ###################
-# $Date$
-# $Author$
-# $Revision$
-# $URL$
-# $Id$
-########### SVN repository information ###################
-
-
 import os
 import sys
 from PyQt4.QtGui import *            #@UnusedWildImport

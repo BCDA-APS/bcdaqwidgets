@@ -294,12 +294,3 @@ def main():
 if __name__ == '__main__':
     sys.argv.append('prj:m1')
     main()
-
-
-########### SVN repository information ###################
-# $Date$
-# $Author$
-# $Revision$
-# $URL$
-# $Id$
-########### SVN repository information ###################

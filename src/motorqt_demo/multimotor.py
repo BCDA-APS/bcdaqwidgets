@@ -12,15 +12,6 @@ Show one or more EPICS motor panels in a Qt GUI QWidget
 '''
 
 
-########### SVN repository information ###################
-# $Date$
-# $Author$
-# $Revision$
-# $URL$
-# $Id$
-########### SVN repository information ###################
-
-
 import sys
 from PyQt4.QtGui import *      #@UnusedWildImport
 import motor_qt
