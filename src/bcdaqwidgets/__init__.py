@@ -3,7 +3,7 @@ BCDA PyQt4 Widgets for EPICS
 '''
 
 import os
-from ._version import git_release
+#from ._version import git_release
 
 import bcdaqwidgets
 
@@ -33,6 +33,36 @@ __zip_safe__    = False
 
 __package_name__ = __project__
 __long_description__    = __description__
+
+DEVELOPER_TEST_STRING = '__developer_testing__'
+
+def git_release(package, version='release_undefined'):
+    '''
+    get the version string from the current git tag and commit info, if available
+    '''
+    release = version
+    try:
+        import os, subprocess
+        
+        # First, verify that we are in the development directory of this package.
+        # Package name must match the name of the directory containing this file.
+        # Otherwise, it is possible that the current working directory might have
+        # a valid response to the "git describe" command and return the wrong version string.
+        path = os.path.dirname(__file__)
+        dirname = os.path.split(path)[-1]
+        if package not in (dirname, DEVELOPER_TEST_STRING):
+            raise ValueError
+        
+        git_command = 'git describe'.split()
+        p = subprocess.Popen(git_command,
+                             stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        out, _err = p.communicate()
+        if out:
+            release = out.decode().strip()
+    except Exception as _exc:
+        pass
+    return release
+
 
 _path = os.path.dirname(__file__)
 _vfile = os.path.join(_path, 'VERSION')
