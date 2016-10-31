@@ -1,9 +1,9 @@
 '''
-BCDA Qt Widgets for EPICS
+BCDA PyQt4 Widgets for EPICS
 '''
 
 import os
-from _version import git_release
+from ._version import git_release
 
 import bcdaqwidgets
 
