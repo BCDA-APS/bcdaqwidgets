@@ -3,7 +3,7 @@
 BcdaQWidgets
 ############
 
-**PyEpics-aware PyQt widgets for the APS**
+*PyEpics-aware PyQt widgets for the APS*
 
 Note: This project is not complete and may be deleted in the future.
    The documentation is being added slowly.
