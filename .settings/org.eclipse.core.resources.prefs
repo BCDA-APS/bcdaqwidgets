@@ -1,2 +1,4 @@
 eclipse.preferences.version=1
+encoding//docs/source/conf.py=utf-8
+encoding//src/_testing/MatplotlibWidget.py=utf-8
 encoding//src/motorqt_demo/tooltips.py=utf-8

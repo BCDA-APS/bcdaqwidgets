@@ -1,4 +1,3 @@
-.. $Id$
 
 Demonstrations: bcdaqwidgets_demos
 ==================================

@@ -1,4 +1,3 @@
-.. $Id$
 
 Dependencies
 ============
@@ -11,7 +10,7 @@ available in Python 2.7.  Additionally, this program uses:
 *PyEpics* (EPICS interface) 
 	http://cars9.uchicago.edu/software/python/pyepics3/
 
-.. index:: PySide
+.. index:: PyQt4
 
 *PyQt4* (Qt4 widget library) 
 	http://http://www.riverbankcomputing.com/software/pyqt/intro/

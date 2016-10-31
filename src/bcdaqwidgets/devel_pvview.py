@@ -9,13 +9,6 @@ import pvview
 sys.path.insert(0, os.path.abspath('..'))
 
 sys.argv.append( 'xxx:iso8601' )
+#sys.argv.append( 'S:SRcurrentAI' )
+#sys.argv.append( 'pj:message' )
 pvview.main()
-
-
-########### SVN repository information ###################
-# $Date$
-# $Author$
-# $Revision$
-# $URL$
-# $Id$
-########### SVN repository information ###################

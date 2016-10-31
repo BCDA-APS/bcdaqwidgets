@@ -3,7 +3,7 @@
 '''
 BcdaQWidgets: PyEpics-aware PyQt widgets for the APS
 
-Copyright (c) 2009 - 2015, UChicago Argonne, LLC.
+Copyright (c) 2009 - 2016, UChicago Argonne, LLC.
 See LICENSE file for details.
 
 The bcdaqwidgets [#]_ module provides a set of PyQt4
@@ -497,12 +497,12 @@ class BcdaQToggleButton(BcdaQPushButton):
             self.ca_connect(pvname)
 
     def ca_connect(self, pvname, ca_callback=None, ca_connect_callback=None):
+        ''' '''
         BcdaQPushButton.ca_connect(self, pvname, ca_callback=None, ca_connect_callback=None)
         labels = self.pv.enum_strs
-        if labels is not None and len(labels)>1:
-            # describe what happens when the button is pressed
-            self.value_names[0] = labels[1]
-            self.value_names[1] = labels[0]
+        if labels is not None and len(labels) == 2:
+            # describe what will happen when the button is pressed
+            self.value_names = reversed(labels)
 
     def onPressed(self):
         '''button was pressed, toggle the EPICS value as a boolean'''
@@ -526,7 +526,7 @@ class BcdaQLabel_RBV(BcdaQLabel):
     EXAMPLE::
 
         pvname = 'ioc:m1'
-        w = bcdaqwidgets.RBV_BcdaQLabel()
+        w = bcdaqwidgets.BcdaQLabel_RBV()
         layout.addWidget(w)
         w.ca_connect(pvname+'.RBV')
 
@@ -539,8 +539,8 @@ class BcdaQLabel_RBV(BcdaQLabel):
         self.dmov = None
     
     def ca_connect(self, rbv_pv):
-        #BcdaQLabel.ca_connect(rbv_pv)
-        super(RBV_BcdaQLabel, self).ca_connect(rbv_pv)
+        ''' '''
+        super(BcdaQLabel_RBV, self).ca_connect(rbv_pv)
         dmov_pv = rbv_pv.split('.')[0] + '.DMOV'
         self.dmov = epics.PV(dmov_pv, callback=self.dmov_callback)
         self.signal.dmov.connect(self.setBackgroundColor)
@@ -556,13 +556,3 @@ class BcdaQLabel_RBV(BcdaQLabel):
 
 
 RBV_BcdaQLabel = BcdaQLabel_RBV    # legacy name
-
-
-########### SVN repository information ###################
-# $Date$
-# $Author$
-# $Revision$
-# $URL$
-# $Id$
-########### SVN repository information ###################
-

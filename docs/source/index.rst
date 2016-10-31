@@ -1,19 +1,32 @@
-.. $Id$
+.. include:: ../../README.rst
 
-BcdaQWidgets: PyEpics-aware PyQt widgets for the APS
-====================================================
-
-:version: |version|
-:built: |today|
-
-.. note:: This project is not complete and may be deleted in the future.
-   The documentation is being added slowly.
+:version:   |version|
+:release:   |release|
+:published: |today|
 
 
-Overview of Contents
-====================
+Overview
+========
+
+--tba--
+
+Contents
+========
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 4
+   :glob:
    
-   contents
+   src/*
+   dependencies
+   changes
+   license
+
+-------------
+
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`
