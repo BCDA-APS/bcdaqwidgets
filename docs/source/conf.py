@@ -44,8 +44,8 @@ class Mock(object):
         else:
             return Mock()
 
-MOCK_MODULES = bcdaqwidgets.__install_requires__
-MOCK_MODULES.append('epics')
+MOCK_MODULES = bcdaqwidgets.__documentation_mocks__
+#MOCK_MODULES.append('epics')
 
 for mod_name in MOCK_MODULES:
     sys.modules[mod_name] = Mock()
