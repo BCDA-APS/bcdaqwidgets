@@ -26,5 +26,6 @@ class QMainWindow(QMockObject): pass
 class QMessageBox(QMockObject): pass
 class QPalette(QMockObject): pass
 class QPlainTextEdit(QMockObject): pass
+class QPushButton(QMockObject): pass
 class QSlider(QMockObject): pass
 class QWidget(QMockObject): pass
