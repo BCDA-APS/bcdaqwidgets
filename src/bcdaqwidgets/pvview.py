@@ -11,6 +11,7 @@ else:
 sys.path.insert(0, os.path.abspath('..'))
 import bcdaqwidgets
 
+
 class PVView(QWidget):
     ''' '''
     def __init__(self, parent=None):
