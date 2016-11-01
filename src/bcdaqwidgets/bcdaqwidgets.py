@@ -28,8 +28,12 @@ widget                         description
 '''
 
 
+import os
 import sys
-from PyQt4 import QtCore, QtGui
+if os.environ.get('READTHEDOCS', None) == 'True':
+    from mock_PyQt4 import QtCore, QtGui
+else:
+    from PyQt4 import QtCore, QtGui
 pyqtSignal = QtCore.pyqtSignal
 import epics
 
