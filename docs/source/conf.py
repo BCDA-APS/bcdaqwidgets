@@ -37,10 +37,10 @@ class Mock(object):
         else:
             return Mock()
 
-MOCK_MODULES = ['epics', 'PyQt4', 'PyQt4.QtCore', 'PyQt4.QtGui']
+MOCK_MODULES = ['epics','PyQt4', 'PyQt4.QtCore', 'PyQt4.QtCore.pyqtSignal', 'PyQt4.QtGui']
+#MOCK_MODULES.append('QtCore.pyqtSignal')
 for mod_name in MOCK_MODULES:
     sys.modules[mod_name] = Mock()
-from PyQt4 import QtCore, QtGui
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
