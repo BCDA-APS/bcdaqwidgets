@@ -4,10 +4,7 @@
 
 import os
 import sys
-if os.environ.get('READTHEDOCS', None) == 'True':
-    from mock_PyQt4.QtGui import QWidget, QLabel, QGridLayout, QApplication
-else:
-    from PyQt4.QtGui import QWidget, QLabel, QGridLayout, QApplication
+from PyQt4.QtGui import QWidget, QLabel, QGridLayout, QApplication
 sys.path.insert(0, os.path.abspath('..'))
 import bcdaqwidgets
 

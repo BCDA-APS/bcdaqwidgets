@@ -24,16 +24,13 @@ widget                         description
        of the Advanced Photon Source, Argonne National Laboratory,
        http://www.aps.anl.gov/bcda
 
-.. note:: bcdaqwidgets must be imported AFTER importing either PyQt4
+.. note:: bcdaqwidgets must be imported AFTER importing PyQt4
 '''
 
 
 import os
 import sys
-if os.environ.get('READTHEDOCS', None) == 'True':
-    from mock_PyQt4 import QtCore, QtGui
-else:
-    from PyQt4 import QtCore, QtGui
+from PyQt4 import QtCore, QtGui
 pyqtSignal = QtCore.pyqtSignal
 import epics
 
