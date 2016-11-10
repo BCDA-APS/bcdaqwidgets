@@ -38,7 +38,7 @@ class Mock(object):
             return Mock()
 
 MOCK_MODULES = ['epics', 'PyQt4', 'PyQt4.QtCore', 'PyQt4.QtGui']
-for mod_name in mocks:
+for mod_name in MOCK_MODULES:
     sys.modules[mod_name] = Mock()
 from PyQt4 import QtCore, QtGui
 
