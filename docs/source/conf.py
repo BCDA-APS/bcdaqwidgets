@@ -37,10 +37,8 @@ class Mock(object):
         else:
             return Mock()
 
-MOCK_MODULES = ['epics',]
+MOCK_MODULES = ['epics', 'PyQt4.QtCore', 'PyQt4.QtGui']
 
-for mod_name in MOCK_MODULES:
-    sys.modules[mod_name] = Mock()
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
@@ -128,8 +126,8 @@ pygments_style = 'sphinx'
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
-html_theme = 'default'
-#html_theme = 'sphinxdoc'
+#html_theme = 'default'
+html_theme = 'sphinxdoc'
 #html_theme = 'agogo'
 
 # Theme options are theme-specific and customize the look and feel of a theme
