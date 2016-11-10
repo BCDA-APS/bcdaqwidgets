@@ -37,7 +37,7 @@ class Mock(object):
         else:
             return Mock()
 
-MOCK_MODULES = ['epics', 'PyQt4.QtCore', 'PyQt4.QtGui']
+MOCK_MODULES = ['epics', 'PyQt4', 'PyQt4.QtCore', 'PyQt4.QtGui']
 
 
 # If extensions (or modules to document with autodoc) are in another directory,
