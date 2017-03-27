@@ -3,6 +3,11 @@ Changes
 
 This describes user-visible changes between versions.
 
+Production releases
+*******************
+
+* :2017.3.0: inital public release
+
 Unreleased (development) Versions
 *********************************
 
