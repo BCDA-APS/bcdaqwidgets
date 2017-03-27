@@ -1,6 +1,10 @@
 .. include:: ../../README.rst
 
-------------
+------
+
+:debug: True
+
+------
 
 :version:   |version|
 :release:   |release|
