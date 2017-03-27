@@ -1,2 +1,4 @@
 include README.rst
 include CHANGES*
+include versioneer.py
+include src/bcdaqwidgets/_version.py

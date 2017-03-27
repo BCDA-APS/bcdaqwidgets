@@ -1,8 +1,10 @@
+Changes
+#######
 
 This describes user-visible changes between versions.
 
 Unreleased (development) Versions
-----------------------------------
+*********************************
 
 :2015.0415.0: minor: convert QString to str
 :2015.0413.0: replaced PySide support with PyQt4 since PySide project is decaying

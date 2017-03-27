@@ -3,7 +3,6 @@ BCDA PyQt4 Widgets for EPICS
 '''
 
 import os
-
 import bcdaqwidgets
 
 
@@ -34,40 +33,6 @@ __package_name__ = __project__
 __long_description__    = __description__
 
 DEVELOPER_TEST_STRING = '__developer_testing__'
-
-
-def git_release(package, version='release_undefined'):
-    '''
-    get the version string from the current git tag and commit info, if available
-    '''
-    release = version
-    try:
-        import os, subprocess
-        
-        # First, verify that we are in the development directory of this package.
-        # Package name must match the name of the directory containing this file.
-        # Otherwise, it is possible that the current working directory might have
-        # a valid response to the "git describe" command and return the wrong version string.
-        path = os.path.dirname(__file__)
-        dirname = os.path.split(path)[-1]
-        if package not in (dirname, DEVELOPER_TEST_STRING):
-            raise ValueError
-        
-        git_command = 'git describe'.split()
-        p = subprocess.Popen(git_command,
-                             stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        out, _err = p.communicate()
-        if out:
-            release = out.decode().strip()
-    except Exception as _exc:
-        pass
-    return release
-
-
-_path = os.path.dirname(__file__)
-_vfile = os.path.join(_path, 'VERSION')
-__version__ = open(_vfile, 'r').read()
-__release__ = git_release(__package_name__, __version__)
 
 __keywords__            = ['APS', 'EPICS', 'PyQt4']
 #__requires__            = ['PyQt4', 'pyepics']
@@ -102,14 +67,17 @@ __packages__ = {
 }
 
 __package_data__ = {
-                    'bcdaqwidgets': [
-                                     'LICENSE',
-                                     'VERSION',
-                                     ],
-                    }
+    'bcdaqwidgets': [
+        'LICENSE.txt',
+    ],
+}
 
 __entry_points__  = {
     # create & install console_scripts in <python>/bin
     'console_scripts': __console_scripts__,
     #'gui_scripts': gui_scripts,
 }
+
+from ._version import get_versions
+__version__ = get_versions()['version']
+del get_versions

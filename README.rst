@@ -10,7 +10,7 @@ Note: This project is not complete and may be deleted in the future.
 :author: 	Pete R. Jemian
 :email:  	jemian@anl.gov
 :copyright: 2005-2017, UChicago Argonne, LLC
-:license:   ANL OPEN SOURCE LICENSE (see *LICENSE*)
+:license:   ANL OPEN SOURCE LICENSE (see *LICENSE.txt*)
 :docs:      http://bcdaqwidgets.readthedocs.io
 :git:       https://github.com/BCDA-APS/bcdaqwidgets.git
 :PyPI:      --tba--

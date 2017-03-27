@@ -5,6 +5,7 @@
 from setuptools import setup, find_packages
 import os
 import sys
+import versioneer
 
 sys.path.insert(0, os.path.join('src', ))
 import bcdaqwidgets
@@ -24,6 +25,7 @@ setup(
     package_dir      = bcdaqwidgets.__packages__,
     package_data     = bcdaqwidgets.__package_data__,
     url              = bcdaqwidgets.__url__,
-    version          = bcdaqwidgets.__version__,
+    version          = versioneer.get_version(),
+    cmdclass         = versioneer.get_cmdclass(),
     zip_safe         = bcdaqwidgets.__zip_safe__,
  )

@@ -2,5 +2,5 @@
 License
 =======
 
-.. literalinclude:: ../../src/bcdaqwidgets/LICENSE
+.. literalinclude:: ../../src/bcdaqwidgets/LICENSE.txt
    :language: text
