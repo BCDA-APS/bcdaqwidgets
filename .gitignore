@@ -1,3 +1,4 @@
 /BcdaQWidgets.egg-info/
 /dist/
 *.pyc
+/build/
