@@ -30,6 +30,7 @@ import bcdaqwidgets
 # Add any Sphinx extension module names here, as strings. They can be extensions
 # coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
 extensions = ['sphinx.ext.autodoc',]
+extensions.append('sphinx.ext.autosummary')
 extensions.append('sphinx.ext.doctest')
 extensions.append('sphinx.ext.todo')
 extensions.append('sphinx.ext.coverage')
