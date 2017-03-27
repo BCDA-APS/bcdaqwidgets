@@ -3,7 +3,7 @@
 '''
 BcdaQWidgets: PyEpics-aware PyQt widgets for the APS
 
-Copyright (c) 2009 - 2016, UChicago Argonne, LLC.
+Copyright (c) 2009-2017, UChicago Argonne, LLC.
 See LICENSE file for details.
 
 The bcdaqwidgets [#]_ module provides a set of PyQt4

@@ -19,7 +19,7 @@ RBV_BcdaQLabel       = BcdaQLabel_RBV       # legacy
 
 __project__     = u'BcdaQWidgets'
 __description__ = u"PyEpics-aware PyQt widgets for the APS."
-__copyright__   = u'2009-2016, UChicago Argonne, LLC'
+__copyright__   = u'2009-2017, UChicago Argonne, LLC'
 __authors__     = [u'Pete Jemian', u'Cayla Suarez']
 __author__      = ', '.join(__authors__)
 __institution__ = u"Advanced Photon Source, Argonne National Laboratory"
@@ -34,6 +34,7 @@ __package_name__ = __project__
 __long_description__    = __description__
 
 DEVELOPER_TEST_STRING = '__developer_testing__'
+
 
 def git_release(package, version='release_undefined'):
     '''
