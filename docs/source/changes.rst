@@ -1,3 +1,5 @@
 .. include:: ../../CHANGES.rst
 
-.. trace comment
+------------
+
+trace comment
