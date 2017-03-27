@@ -6,7 +6,12 @@ This describes user-visible changes between versions.
 Production releases
 *******************
 
-* :2017.3.0: inital public release
+:2017.3.0: 
+
+   * inital public release
+
+   .. * `#6 <https://github.com/prjemian/spec2nexus/issues/6>`_
+      source code now documented on ReadTheDocs
 
 Unreleased (development) Versions
 *********************************
