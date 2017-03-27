@@ -1,5 +1,7 @@
 .. include:: ../../README.rst
 
+------------
+
 :version:   |version|
 :release:   |release|
 :published: |today|
