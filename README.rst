@@ -13,5 +13,5 @@ Note: This project is not complete and may be deleted in the future.
 :license:   ANL OPEN SOURCE LICENSE (see *LICENSE.txt*)
 :docs:      http://bcdaqwidgets.readthedocs.io
 :git:       https://github.com/BCDA-APS/bcdaqwidgets.git
-:PyPI:      --tba--
+:PyPI:      https://pypi.python.org/pypi/BcdaQWidgets
 :TODO list: https://github.com/BCDA-APS/bcdaqwidgets/issues
