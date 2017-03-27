@@ -1,0 +1,11 @@
+name: bcdaqwidgets
+dependencies:
+  - python=2.7.*
+  - pyqt=4.*
+  - sip
+  - sphinx
+  - pip:
+    - versioneer
+    - pyepics
+    - sphinx_rtd_theme
+    

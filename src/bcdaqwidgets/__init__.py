@@ -72,7 +72,6 @@ __keywords__            = ['APS', 'EPICS', 'PyQt4']
 #__requires__            = ['PyQt4', 'pyepics']
 __requires__            = ['pyepics']
 __install_requires__    = __requires__
-__documentation_mocks__ = ['epics']       # do NOT mock PyQt4 here, big problems if you do
 
 __classifiers__ = [
     'Development Status :: 4 - Beta',
