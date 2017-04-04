@@ -503,7 +503,7 @@ class BcdaQToggleButton(BcdaQPushButton):
         labels = self.pv.enum_strs
         if labels is not None and len(labels) == 2:
             # describe what will happen when the button is pressed
-            self.value_names = reversed(labels)
+            self.value_names = list(reversed(labels))
 
     def onPressed(self):
         '''button was pressed, toggle the EPICS value as a boolean'''
