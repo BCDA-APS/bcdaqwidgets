@@ -4,8 +4,12 @@ BcdaQWidgets
 
 *PyEpics-aware PyQt widgets for the APS*
 
-Note: This project is not complete and may be deleted in the future.
-   The documentation is being added slowly.
+NOTE: this project is discontinued as of 2019-10-01
+
+Given the [PyDM](https://github.com/slaclab/pydm) from SLAC, 
+that creates EPICS-aware Qt5 widgets for Python 3, 
+this project will be discontinued in favor of transition to 
+use the PyDM [widgets](http://slaclab.github.io/pydm/widgets/index.html).
 
 :author: 	Pete R. Jemian
 :email:  	jemian@anl.gov
